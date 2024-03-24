@@ -1,0 +1,931 @@
+
+==> testphi.g++.openmp.x <==
+
+==> testphi.g++.x <==
+
+==> testphi.icpc.openmp.x <==
+5,25d4
+< compare        3 and       25
+< compare        4 and       25
+< compare        5 and       25
+< compare        6 and       25
+< compare        7 and       25
+< compare        8 and       25
+< compare        9 and       25
+< compare       10 and       25
+< compare       11 and       25
+< compare       12 and       25
+< compare       13 and       25
+< compare       14 and       25
+< compare       15 and       25
+< compare       16 and       25
+< compare       17 and       25
+< compare       18 and       25
+< compare       19 and       25
+< compare       20 and       25
+< compare       21 and       25
+< compare       22 and       25
+< compare       23 and       25
+27a7,8
+> compare        3 and       25
+> compare        4 and       25
+29a11,12
+> compare        5 and       25
+> compare        6 and       25
+31a15,16
+> compare        7 and       25
+> compare        8 and       25
+33a19,20
+> compare        9 and       25
+> compare       10 and       25
+35a23,24
+> compare       11 and       25
+> compare       12 and       25
+37a27,28
+> compare       13 and       25
+> compare       14 and       25
+39a31,32
+> compare       15 and       25
+> compare       16 and       25
+41a35,36
+> compare       17 and       25
+> compare       18 and       25
+43a39,40
+> compare       19 and       25
+> compare       20 and       25
+45a43,44
+> compare       21 and       25
+> compare       22 and       25
+47a47
+> compare       23 and       25
+49a50
+> compare       24 and       25
+52c53
+< compare       25 and       24
+---
+> compare       25 and        0
+56d56
+< compare       26 and       37
+58c58
+< compare       28 and       37
+---
+> compare       22 and       37
+60c60
+< compare       30 and       37
+---
+> compare       20 and       37
+62c62
+< compare       32 and       37
+---
+> compare       18 and       37
+64c64
+< compare       34 and       37
+---
+> compare       16 and       37
+66c66,69
+< compare       36 and       37
+---
+> compare       14 and       37
+> compare       24 and       37
+> compare       12 and       37
+> compare       39 and       37
+68c71,73
+< compare       37 and       48
+---
+> compare       37 and        2
+> compare       10 and       37
+> compare       41 and       37
+70c75,77
+< compare       37 and       46
+---
+> compare       37 and        4
+> compare        8 and       37
+> compare       43 and       37
+72,83c79,106
+< compare       37 and       44
+< compare       37 and       43
+< compare       37 and       42
+< compare       37 and       41
+< compare       37 and       40
+< compare       37 and       39
+< compare       37 and       38
+< compare       24 and       37
+< compare       36 and       37
+< compare       37 and       24
+< compare        1 and       12
+< compare       12 and        0
+---
+> compare       37 and        6
+> compare       43 and       37
+> compare       37 and        6
+> compare       23 and       16
+> compare       23 and        6
+> compare       16 and        6
+> compare       23 and       16
+> compare       16 and        6
+> compare       27 and       16
+> compare       16 and        8
+> compare       22 and       16
+> compare       16 and        4
+> compare       29 and       16
+> compare       16 and       10
+> compare       20 and       16
+> compare       16 and        2
+> compare       31 and       16
+> compare       16 and       12
+> compare       18 and       16
+> compare       16 and       24
+> compare       16 and       14
+> compare       33 and       16
+> compare       16 and       35
+> compare       16 and       37
+> compare       16 and       33
+> compare       16 and       14
+> compare        1 and       38
+> compare       38 and        0
+87,88c110,113
+< compare        2 and        1
+< compare        1 and       22
+---
+> compare       48 and        1
+> compare        1 and       26
+> compare        1 and       28
+> compare        3 and        1
+90c115,116
+< compare        1 and       20
+---
+> compare        1 and       30
+> compare       46 and        1
+92c118,119
+< compare        1 and       18
+---
+> compare        1 and       32
+> compare        5 and        1
+94c121,122
+< compare        1 and       16
+---
+> compare        1 and       34
+> compare       44 and        1
+96c124,125
+< compare        1 and       14
+---
+> compare        1 and       36
+> compare        7 and        1
+98c127,128
+< compare        1 and       12
+---
+> compare        1 and       38
+> compare       42 and        1
+100c130,131
+< compare        1 and       10
+---
+> compare        1 and       40
+> compare        9 and        1
+102,134c133
+< compare        1 and        8
+< compare        1 and        7
+< compare        1 and        6
+< compare        1 and        5
+< compare        1 and        4
+< compare        1 and        3
+< compare        1 and        2
+< compare        1 and        0
+< compare        3 and       13
+< compare       13 and       25
+< compare        3 and       13
+< compare        4 and       13
+< compare        5 and       13
+< compare        6 and       13
+< compare        7 and       13
+< compare        8 and       13
+< compare        9 and       13
+< compare       10 and       13
+< compare       11 and       13
+< compare       12 and       13
+< compare       13 and       25
+< compare       13 and       22
+< compare       13 and       21
+< compare       13 and       20
+< compare       13 and       19
+< compare       13 and       18
+< compare       13 and       17
+< compare       13 and       16
+< compare       13 and       15
+< compare       13 and       14
+< compare        2 and       13
+< compare       12 and       13
+< compare       13 and        2
+---
+> compare        1 and       40
+137,156c136,149
+< compare       13 and        1
+< compare       13 and        0
+< compare        3 and        1
+< compare        3 and       13
+< compare        3 and        0
+< compare        4 and        1
+< compare        4 and       13
+< compare        4 and        3
+< compare        5 and        1
+< compare        5 and       13
+< compare        5 and        4
+< compare        6 and        1
+< compare        6 and       13
+< compare        6 and        5
+< compare        7 and        1
+< compare        7 and       13
+< compare        7 and        6
+< compare        8 and        1
+< compare        8 and       13
+< compare        8 and        7
+---
+> compare       28 and        1
+> compare       28 and        0
+> compare       30 and        1
+> compare       30 and       28
+> compare       32 and        1
+> compare       32 and       30
+> compare       34 and        1
+> compare       34 and       32
+> compare       36 and        1
+> compare       36 and       34
+> compare       38 and        1
+> compare       38 and       36
+> compare       40 and        1
+> compare       40 and       38
+158,162c151,160
+< compare        9 and       13
+< compare        9 and        8
+< compare       10 and        1
+< compare       10 and       13
+< compare       10 and        9
+---
+> compare        9 and       40
+> compare        9 and       38
+> compare        9 and       36
+> compare        9 and       34
+> compare        9 and       32
+> compare        9 and       30
+> compare        9 and       28
+> compare        9 and        0
+> compare       42 and        1
+> compare       42 and       40
+164,181c162,193
+< compare       11 and       13
+< compare       11 and       10
+< compare       14 and        1
+< compare       14 and       13
+< compare        2 and        1
+< compare        2 and       14
+< compare        2 and       13
+< compare        2 and       11
+< compare        2 and       10
+< compare        2 and        9
+< compare        2 and        8
+< compare        2 and        7
+< compare        2 and        6
+< compare        2 and        5
+< compare        2 and        4
+< compare        2 and        3
+< compare       12 and        1
+< compare       12 and       14
+---
+> compare       11 and       42
+> compare       11 and       40
+> compare       11 and       38
+> compare       11 and       36
+> compare       11 and       34
+> compare       11 and       32
+> compare       11 and       30
+> compare       11 and       28
+> compare       11 and        9
+> compare        7 and        1
+> compare        7 and       42
+> compare        7 and       40
+> compare        7 and       38
+> compare        7 and       36
+> compare        7 and       34
+> compare        7 and       32
+> compare        7 and       30
+> compare        7 and       28
+> compare        7 and       11
+> compare        7 and        9
+> compare       13 and        1
+> compare       13 and       42
+> compare       13 and       40
+> compare       13 and       38
+> compare       13 and       36
+> compare       13 and       34
+> compare       13 and       32
+> compare       13 and       30
+> compare       13 and       28
+> compare       13 and       11
+> compare       44 and        1
+> compare       44 and       42
+183,212c195,241
+< compare       15 and       12
+< compare       16 and       15
+< compare       17 and       16
+< compare       18 and       17
+< compare       19 and       18
+< compare       20 and       19
+< compare       21 and       20
+< compare       22 and       21
+< compare       25 and       22
+< compare       37 and       25
+< compare       23 and       37
+< compare       23 and       25
+< compare       26 and       37
+< compare       26 and       23
+< compare       27 and       37
+< compare       27 and       26
+< compare       28 and       37
+< compare       28 and       27
+< compare       29 and       37
+< compare       29 and       28
+< compare       30 and       37
+< compare       30 and       29
+< compare       31 and       37
+< compare       31 and       30
+< compare       32 and       37
+< compare       32 and       31
+< compare       33 and       37
+< compare       33 and       32
+< compare       34 and       37
+< compare       34 and       33
+---
+> compare       15 and       44
+> compare       15 and       42
+> compare       15 and       40
+> compare       15 and       38
+> compare       15 and       36
+> compare       15 and       34
+> compare       15 and       32
+> compare       15 and       30
+> compare       15 and       28
+> compare       15 and       13
+> compare        5 and       44
+> compare        5 and       42
+> compare       17 and       44
+> compare       17 and        5
+> compare       46 and       44
+> compare       19 and       46
+> compare       19 and       44
+> compare        3 and       46
+> compare        3 and       19
+> compare       21 and       46
+> compare       21 and        3
+> compare       48 and       46
+> compare       26 and       48
+> compare       26 and       46
+> compare       25 and       48
+> compare       25 and       26
+> compare       16 and       48
+> compare       16 and       25
+> compare        6 and       48
+> compare        6 and       16
+> compare        8 and       48
+> compare        8 and        6
+> compare        4 and       48
+> compare        4 and        8
+> compare       10 and       48
+> compare       10 and        4
+> compare        2 and       48
+> compare        2 and       10
+> compare       12 and       48
+> compare       12 and        2
+> compare       14 and       48
+> compare       14 and       12
+> compare       33 and       48
+> compare       33 and       14
+> compare       37 and       48
+> compare       37 and       33
+> compare       35 and       48
+214,240c243,268
+< compare       35 and       34
+< compare       38 and       37
+< compare       24 and       38
+< compare       24 and       37
+< compare       24 and       35
+< compare       24 and       34
+< compare       24 and       33
+< compare       24 and       32
+< compare       24 and       31
+< compare       24 and       30
+< compare       24 and       29
+< compare       24 and       28
+< compare       24 and       27
+< compare       24 and       26
+< compare       24 and       23
+< compare       36 and       38
+< compare       39 and       36
+< compare       40 and       39
+< compare       41 and       40
+< compare       42 and       41
+< compare       43 and       42
+< compare       44 and       43
+< compare       45 and       44
+< compare       46 and       45
+< compare       47 and       46
+< compare       48 and       47
+< compare       49 and       48
+---
+> compare       18 and       48
+> compare       18 and       35
+> compare       24 and       48
+> compare       24 and       18
+> compare       31 and       48
+> compare       31 and       24
+> compare       20 and       48
+> compare       20 and       31
+> compare       29 and       48
+> compare       29 and       20
+> compare       22 and       48
+> compare       22 and       29
+> compare       27 and       48
+> compare       27 and       22
+> compare       23 and       48
+> compare       23 and       27
+> compare       43 and       48
+> compare       43 and       23
+> compare       45 and       48
+> compare       45 and       43
+> compare       41 and       48
+> compare       41 and       45
+> compare       47 and       48
+> compare       39 and       47
+> compare       39 and       48
+> compare       49 and       47
+243,256c271,284
+<         2    52367
+<         3    52367
+<         4    52368
+<         5    52368
+<         6    52368
+<         7    52369
+<         8    52369
+<         9    52369
+<        10    52370
+<        11    52370
+<        12    52371
+<        13    52371
+<        14    52371
+<        15    52372
+---
+>         2    52369
+>         3    52369
+>         4    52370
+>         5    52371
+>         6    52372
+>         7    52377
+>         8    52377
+>         9    52378
+>        10    52379
+>        11    52380
+>        12    52380
+>        13    52381
+>        14    52382
+>        15    52368
+258c286
+<        17    52372
+---
+>        17    52383
+260,263c288,291
+<        19    52373
+<        20    52373
+<        21    52374
+<        22    52374
+---
+>        19    52367
+>        20    52374
+>        21    52383
+>        22    52376
+265,272c293,300
+<        24    52375
+<        25    52375
+<        26    52376
+<        27    52376
+<        28    52377
+<        29    52377
+<        30    52377
+<        31    52378
+---
+>        24    52372
+>        25    52368
+>        26    52369
+>        27    52368
+>        28    52370
+>        29    52367
+>        30    52371
+>        31    52371
+274c302
+<        33    52378
+---
+>        33    52380
+276,283c304,311
+<        35    52379
+<        36    52380
+<        37    52380
+<        38    52380
+<        39    52381
+<        40    52381
+<        41    52381
+<        42    52382
+---
+>        35    52373
+>        36    52375
+>        37    52378
+>        38    52373
+>        39    52377
+>        40    52374
+>        41    52376
+>        42    52375
+286,288c314,316
+<        45    52383
+<        46    52383
+<        47    52384
+---
+>        45    52381
+>        46    52384
+>        47    52381
+
+==> testphi.icpc.x <==
+compare        1 and       25					compare        1 and       25
+compare       25 and       49					compare       25 and       49
+compare        1 and       25					compare        1 and       25
+compare        2 and       25					compare        2 and       25
+compare        3 and       25				      <
+compare        4 and       25				      <
+compare        5 and       25				      <
+compare        6 and       25				      <
+compare        7 and       25				      <
+compare        8 and       25				      <
+compare        9 and       25				      <
+compare       10 and       25				      <
+compare       11 and       25				      <
+compare       12 and       25				      <
+compare       13 and       25				      <
+compare       14 and       25				      <
+compare       15 and       25				      <
+compare       16 and       25				      <
+compare       17 and       25				      <
+compare       18 and       25				      <
+compare       19 and       25				      <
+compare       20 and       25				      <
+compare       21 and       25				      <
+compare       22 and       25				      <
+compare       23 and       25				      <
+compare       25 and       49					compare       25 and       49
+compare       25 and       48					compare       25 and       48
+							      >	compare        3 and       25
+							      >	compare        4 and       25
+compare       25 and       47					compare       25 and       47
+compare       25 and       46					compare       25 and       46
+							      >	compare        5 and       25
+							      >	compare        6 and       25
+compare       25 and       45					compare       25 and       45
+compare       25 and       44					compare       25 and       44
+							      >	compare        7 and       25
+							      >	compare        8 and       25
+compare       25 and       43					compare       25 and       43
+compare       25 and       42					compare       25 and       42
+							      >	compare        9 and       25
+							      >	compare       10 and       25
+compare       25 and       41					compare       25 and       41
+compare       25 and       40					compare       25 and       40
+							      >	compare       11 and       25
+							      >	compare       12 and       25
+compare       25 and       39					compare       25 and       39
+compare       25 and       38					compare       25 and       38
+							      >	compare       13 and       25
+							      >	compare       14 and       25
+compare       25 and       37					compare       25 and       37
+compare       25 and       36					compare       25 and       36
+							      >	compare       15 and       25
+							      >	compare       16 and       25
+compare       25 and       35					compare       25 and       35
+compare       25 and       34					compare       25 and       34
+							      >	compare       17 and       25
+							      >	compare       18 and       25
+compare       25 and       33					compare       25 and       33
+compare       25 and       32					compare       25 and       32
+							      >	compare       19 and       25
+							      >	compare       20 and       25
+compare       25 and       31					compare       25 and       31
+compare       25 and       30					compare       25 and       30
+							      >	compare       21 and       25
+							      >	compare       22 and       25
+compare       25 and       29					compare       25 and       29
+compare       25 and       28					compare       25 and       28
+							      >	compare       23 and       25
+compare       25 and       27					compare       25 and       27
+compare       25 and       26					compare       25 and       26
+							      >	compare       24 and       25
+compare       25 and        0					compare       25 and        0
+compare       24 and       25					compare       24 and       25
+compare       25 and       24				      |	compare       25 and        0
+compare       23 and       37					compare       23 and       37
+compare       37 and       49					compare       37 and       49
+compare       23 and       37					compare       23 and       37
+compare       26 and       37				      <
+compare       27 and       37					compare       27 and       37
+compare       28 and       37				      |	compare       22 and       37
+compare       29 and       37					compare       29 and       37
+compare       30 and       37				      |	compare       20 and       37
+compare       31 and       37					compare       31 and       37
+compare       32 and       37				      |	compare       18 and       37
+compare       33 and       37					compare       33 and       37
+compare       34 and       37				      |	compare       16 and       37
+compare       35 and       37					compare       35 and       37
+compare       36 and       37				      |	compare       14 and       37
+							      >	compare       24 and       37
+							      >	compare       12 and       37
+							      >	compare       39 and       37
+compare       37 and       49					compare       37 and       49
+compare       37 and       48				      |	compare       37 and        2
+							      >	compare       10 and       37
+							      >	compare       41 and       37
+compare       37 and       47					compare       37 and       47
+compare       37 and       46				      |	compare       37 and        4
+							      >	compare        8 and       37
+							      >	compare       43 and       37
+compare       37 and       45					compare       37 and       45
+compare       37 and       44				      |	compare       37 and        6
+compare       37 and       43				      |	compare       43 and       37
+compare       37 and       42				      |	compare       37 and        6
+compare       37 and       41				      |	compare       23 and       16
+compare       37 and       40				      |	compare       23 and        6
+compare       37 and       39				      |	compare       16 and        6
+compare       37 and       38				      |	compare       23 and       16
+compare       24 and       37				      |	compare       16 and        6
+compare       36 and       37				      |	compare       27 and       16
+compare       37 and       24				      |	compare       16 and        8
+compare        1 and       12				      |	compare       22 and       16
+compare       12 and        0				      |	compare       16 and        4
+							      >	compare       29 and       16
+							      >	compare       16 and       10
+							      >	compare       20 and       16
+							      >	compare       16 and        2
+							      >	compare       31 and       16
+							      >	compare       16 and       12
+							      >	compare       18 and       16
+							      >	compare       16 and       24
+							      >	compare       16 and       14
+							      >	compare       33 and       16
+							      >	compare       16 and       35
+							      >	compare       16 and       37
+							      >	compare       16 and       33
+							      >	compare       16 and       14
+							      >	compare        1 and       38
+							      >	compare       38 and        0
+compare        1 and        0					compare        1 and        0
+compare       25 and        1					compare       25 and        1
+compare        1 and        0					compare        1 and        0
+compare        2 and        1				      |	compare       48 and        1
+compare        1 and       22				      |	compare        1 and       26
+							      >	compare        1 and       28
+							      >	compare        3 and        1
+compare        1 and       21					compare        1 and       21
+compare        1 and       20				      |	compare        1 and       30
+							      >	compare       46 and        1
+compare        1 and       19					compare        1 and       19
+compare        1 and       18				      |	compare        1 and       32
+							      >	compare        5 and        1
+compare        1 and       17					compare        1 and       17
+compare        1 and       16				      |	compare        1 and       34
+							      >	compare       44 and        1
+compare        1 and       15					compare        1 and       15
+compare        1 and       14				      |	compare        1 and       36
+							      >	compare        7 and        1
+compare        1 and       13					compare        1 and       13
+compare        1 and       12				      |	compare        1 and       38
+							      >	compare       42 and        1
+compare        1 and       11					compare        1 and       11
+compare        1 and       10				      |	compare        1 and       40
+							      >	compare        9 and        1
+compare        1 and        9					compare        1 and        9
+compare        1 and        8				      |	compare        1 and       40
+compare        1 and        7				      <
+compare        1 and        6				      <
+compare        1 and        5				      <
+compare        1 and        4				      <
+compare        1 and        3				      <
+compare        1 and        2				      <
+compare        1 and        0				      <
+compare        3 and       13				      <
+compare       13 and       25				      <
+compare        3 and       13				      <
+compare        4 and       13				      <
+compare        5 and       13				      <
+compare        6 and       13				      <
+compare        7 and       13				      <
+compare        8 and       13				      <
+compare        9 and       13				      <
+compare       10 and       13				      <
+compare       11 and       13				      <
+compare       12 and       13				      <
+compare       13 and       25				      <
+compare       13 and       22				      <
+compare       13 and       21				      <
+compare       13 and       20				      <
+compare       13 and       19				      <
+compare       13 and       18				      <
+compare       13 and       17				      <
+compare       13 and       16				      <
+compare       13 and       15				      <
+compare       13 and       14				      <
+compare        2 and       13				      <
+compare       12 and       13				      <
+compare       13 and        2				      <
+compare        0 and        1					compare        0 and        1
+compare        0 and        1					compare        0 and        1
+compare       13 and        1				      |	compare       28 and        1
+compare       13 and        0				      |	compare       28 and        0
+compare        3 and        1				      |	compare       30 and        1
+compare        3 and       13				      |	compare       30 and       28
+compare        3 and        0				      |	compare       32 and        1
+compare        4 and        1				      |	compare       32 and       30
+compare        4 and       13				      |	compare       34 and        1
+compare        4 and        3				      |	compare       34 and       32
+compare        5 and        1				      |	compare       36 and        1
+compare        5 and       13				      |	compare       36 and       34
+compare        5 and        4				      |	compare       38 and        1
+compare        6 and        1				      |	compare       38 and       36
+compare        6 and       13				      |	compare       40 and        1
+compare        6 and        5				      |	compare       40 and       38
+compare        7 and        1				      <
+compare        7 and       13				      <
+compare        7 and        6				      <
+compare        8 and        1				      <
+compare        8 and       13				      <
+compare        8 and        7				      <
+compare        9 and        1					compare        9 and        1
+compare        9 and       13				      |	compare        9 and       40
+compare        9 and        8				      |	compare        9 and       38
+compare       10 and        1				      |	compare        9 and       36
+compare       10 and       13				      |	compare        9 and       34
+compare       10 and        9				      |	compare        9 and       32
+							      >	compare        9 and       30
+							      >	compare        9 and       28
+							      >	compare        9 and        0
+							      >	compare       42 and        1
+							      >	compare       42 and       40
+compare       11 and        1					compare       11 and        1
+compare       11 and       13				      |	compare       11 and       42
+compare       11 and       10				      |	compare       11 and       40
+compare       14 and        1				      |	compare       11 and       38
+compare       14 and       13				      |	compare       11 and       36
+compare        2 and        1				      |	compare       11 and       34
+compare        2 and       14				      |	compare       11 and       32
+compare        2 and       13				      |	compare       11 and       30
+compare        2 and       11				      |	compare       11 and       28
+compare        2 and       10				      |	compare       11 and        9
+compare        2 and        9				      |	compare        7 and        1
+compare        2 and        8				      |	compare        7 and       42
+compare        2 and        7				      |	compare        7 and       40
+compare        2 and        6				      |	compare        7 and       38
+compare        2 and        5				      |	compare        7 and       36
+compare        2 and        4				      |	compare        7 and       34
+compare        2 and        3				      |	compare        7 and       32
+compare       12 and        1				      |	compare        7 and       30
+compare       12 and       14				      |	compare        7 and       28
+							      >	compare        7 and       11
+							      >	compare        7 and        9
+							      >	compare       13 and        1
+							      >	compare       13 and       42
+							      >	compare       13 and       40
+							      >	compare       13 and       38
+							      >	compare       13 and       36
+							      >	compare       13 and       34
+							      >	compare       13 and       32
+							      >	compare       13 and       30
+							      >	compare       13 and       28
+							      >	compare       13 and       11
+							      >	compare       44 and        1
+							      >	compare       44 and       42
+compare       15 and        1					compare       15 and        1
+compare       15 and       12				      |	compare       15 and       44
+compare       16 and       15				      |	compare       15 and       42
+compare       17 and       16				      |	compare       15 and       40
+compare       18 and       17				      |	compare       15 and       38
+compare       19 and       18				      |	compare       15 and       36
+compare       20 and       19				      |	compare       15 and       34
+compare       21 and       20				      |	compare       15 and       32
+compare       22 and       21				      |	compare       15 and       30
+compare       25 and       22				      |	compare       15 and       28
+compare       37 and       25				      |	compare       15 and       13
+compare       23 and       37				      |	compare        5 and       44
+compare       23 and       25				      |	compare        5 and       42
+compare       26 and       37				      |	compare       17 and       44
+compare       26 and       23				      |	compare       17 and        5
+compare       27 and       37				      |	compare       46 and       44
+compare       27 and       26				      |	compare       19 and       46
+compare       28 and       37				      |	compare       19 and       44
+compare       28 and       27				      |	compare        3 and       46
+compare       29 and       37				      |	compare        3 and       19
+compare       29 and       28				      |	compare       21 and       46
+compare       30 and       37				      |	compare       21 and        3
+compare       30 and       29				      |	compare       48 and       46
+compare       31 and       37				      |	compare       26 and       48
+compare       31 and       30				      |	compare       26 and       46
+compare       32 and       37				      |	compare       25 and       48
+compare       32 and       31				      |	compare       25 and       26
+compare       33 and       37				      |	compare       16 and       48
+compare       33 and       32				      |	compare       16 and       25
+compare       34 and       37				      |	compare        6 and       48
+compare       34 and       33				      |	compare        6 and       16
+							      >	compare        8 and       48
+							      >	compare        8 and        6
+							      >	compare        4 and       48
+							      >	compare        4 and        8
+							      >	compare       10 and       48
+							      >	compare       10 and        4
+							      >	compare        2 and       48
+							      >	compare        2 and       10
+							      >	compare       12 and       48
+							      >	compare       12 and        2
+							      >	compare       14 and       48
+							      >	compare       14 and       12
+							      >	compare       33 and       48
+							      >	compare       33 and       14
+							      >	compare       37 and       48
+							      >	compare       37 and       33
+							      >	compare       35 and       48
+compare       35 and       37					compare       35 and       37
+compare       35 and       34				      |	compare       18 and       48
+compare       38 and       37				      |	compare       18 and       35
+compare       24 and       38				      |	compare       24 and       48
+compare       24 and       37				      |	compare       24 and       18
+compare       24 and       35				      |	compare       31 and       48
+compare       24 and       34				      |	compare       31 and       24
+compare       24 and       33				      |	compare       20 and       48
+compare       24 and       32				      |	compare       20 and       31
+compare       24 and       31				      |	compare       29 and       48
+compare       24 and       30				      |	compare       29 and       20
+compare       24 and       29				      |	compare       22 and       48
+compare       24 and       28				      |	compare       22 and       29
+compare       24 and       27				      |	compare       27 and       48
+compare       24 and       26				      |	compare       27 and       22
+compare       24 and       23				      |	compare       23 and       48
+compare       36 and       38				      |	compare       23 and       27
+compare       39 and       36				      |	compare       43 and       48
+compare       40 and       39				      |	compare       43 and       23
+compare       41 and       40				      |	compare       45 and       48
+compare       42 and       41				      |	compare       45 and       43
+compare       43 and       42				      |	compare       41 and       48
+compare       44 and       43				      |	compare       41 and       45
+compare       45 and       44				      |	compare       47 and       48
+compare       46 and       45				      |	compare       39 and       47
+compare       47 and       46				      |	compare       39 and       48
+compare       48 and       47				      |	compare       49 and       47
+compare       49 and       48				      <
+        0    52366						        0    52366
+        1    52366						        1    52366
+        2    52367					      |	        2    52369
+        3    52367					      |	        3    52369
+        4    52368					      |	        4    52370
+        5    52368					      |	        5    52371
+        6    52368					      |	        6    52372
+        7    52369					      |	        7    52377
+        8    52369					      |	        8    52377
+        9    52369					      |	        9    52378
+       10    52370					      |	       10    52379
+       11    52370					      |	       11    52380
+       12    52371					      |	       12    52380
+       13    52371					      |	       13    52381
+       14    52371					      |	       14    52382
+       15    52372					      |	       15    52368
+       16    52372						       16    52372
+       17    52372					      |	       17    52383
+       18    52373						       18    52373
+       19    52373					      |	       19    52367
+       20    52373					      |	       20    52374
+       21    52374					      |	       21    52383
+       22    52374					      |	       22    52376
+       23    52375						       23    52375
+       24    52375					      |	       24    52372
+       25    52375					      |	       25    52368
+       26    52376					      |	       26    52369
+       27    52376					      |	       27    52368
+       28    52377					      |	       28    52370
+       29    52377					      |	       29    52367
+       30    52377					      |	       30    52371
+       31    52378					      |	       31    52371
+       32    52378						       32    52378
+       33    52378					      |	       33    52380
+       34    52379						       34    52379
+       35    52379					      |	       35    52373
+       36    52380					      |	       36    52375
+       37    52380					      |	       37    52378
+       38    52380					      |	       38    52373
+       39    52381					      |	       39    52377
+       40    52381					      |	       40    52374
+       41    52381					      |	       41    52376
+       42    52382					      |	       42    52375
+       43    52382						       43    52382
+       44    52383						       44    52383
+       45    52383					      |	       45    52381
+       46    52383					      |	       46    52384
+       47    52384					      |	       47    52381
+       48    52384						       48    52384
+       49    52384						       49    52384

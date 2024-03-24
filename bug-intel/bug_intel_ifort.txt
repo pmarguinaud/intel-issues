@@ -1,0 +1,57 @@
+Script started on Thu 26 Mar 2020 03:45:40 PM UTC
+kmarguina@eponalogin0:~/bug-intel\[marguina@eponalogin0 bug-intel]$ 
+kmarguina@eponalogin0:~/bug-intel\[marguina@eponalogin0 bug-intel]$ 
+kmarguina@eponalogin0:~/bug-intel\[marguina@eponalogin0 bug-intel]$ module purge
+kmarguina@eponalogin0:~/bug-intel\[marguina@eponalogin0 bug-intel]$ ./make_intel2020.sh
+rm: cannot remove ‘*.o’: No such file or directory
+rm: cannot remove ‘*.mod’: No such file or directory
+ifort (IFORT) 19.1.0.166 20191121
+Copyright (C) 1985-2019 Intel Corporation.  All rights reserved.
+
+atlas-arpege_f.F90(10): internal error: Please visit 'http://www.intel.com/software/products/support' for assistance.
+END PROGRAM ATLAS_ARPEGE_F
+^
+[ Aborting due to internal error. ]
+compilation aborted for atlas-arpege_f.F90 (code 1)
+kmarguina@eponalogin0:~/bug-intel\[marguina@eponalogin0 bug-intel]$ 
+kmarguina@eponalogin0:~/bug-intel\[marguina@eponalogin0 bug-intel]$ 
+kmarguina@eponalogin0:~/bug-intel\[marguina@eponalogin0 bug-intel]$ 
+kmarguina@eponalogin0:~/bug-intel\[marguina@eponalogin0 bug-intel]$ ./make_intel2019.sh
+Intel Parallel Studio XE 2019 update 5 loaded
+
+------------------------------------------------------------------------ Modules available for intel/2019.5.281 -------------------------------------------------------------------------
+
+ifort (IFORT) 19.0.5.281 20190815
+Copyright (C) 1985-2019 Intel Corporation.  All rights reserved.
+
+atlas-arpege_f.F90(10): internal error: Please visit 'http://www.intel.com/software/products/support' for assistance.
+END PROGRAM ATLAS_ARPEGE_F
+^
+[ Aborting due to internal error. ]
+compilation aborted for atlas-arpege_f.F90 (code 1)
+kmarguina@eponalogin0:~/bug-intel\[marguina@eponalogin0 bug-intel]$ 
+kmarguina@eponalogin0:~/bug-intel\[marguina@eponalogin0 bug-intel]$ 
+kmarguina@eponalogin0:~/bug-intel\[marguina@eponalogin0 bug-intel]$ 
+kmarguina@eponalogin0:~/bug-intel\[marguina@eponalogin0 bug-intel]$ ./make_intel2018.sh
+Intel Parallel Studio XE 2018 update 5 loaded
+
+------------------------------------------------------------------------ Modules available for intel/2018.5.274 -------------------------------------------------------------------------
+OpenBLAS/0.3.0           armadillo/9.800.2        eccodes/2.15.0           hdf5/1.10.5              lapack/3.8.0(default)    netcdf_par/4.7.1         pnetcdf/1.12.0_recom     
+OpenBLAS/0.3.6           blitz/0.10               fftw/3.3.8               hdf5/1.10.5_recom        nco/4.6.2                netcdf_par/4.7.1_recom   proj/6.2.1               
+R/3.3.2(default)         bufr405/405              gdal/3.0.2               hwloc/2.1.0              nco/4.6.2_recom          outils_grib_api/1.1      scotch/6.0.9             
+R/3.3.2_rgeostat11.0.3   cdo/1.9.3                geos/3.8.0               jasper/1.900.1           ncview/2.1.7             pastix/6.0.3             scotch/6.0.9_ompi        
+R/3.3.2_rgeostat11.2.12  cdo/1.9.8                gmt/6.0.0                jasper/1.900.28          netcdf-c/4.7.1           pcre/8.39                szip/2.1.1               
+R/3.6.1                  curl/7.66.0              grib_api/1.26            jasper/1.900.29          netcdf-cxx4/4.3.1        phdf5/1.10.5             udunits/2.2.20           
+R/3.6.1_rgeostat11.0.3   curl/ssl-7.66.0          grib_api/1.28            json-fortran/7.1.0       netcdf-fortran/4.5.2     phdf5/1.10.5_recom       xz/5.2.3                 
+R/3.6.1_rgeostat11.2.12  eccodes/2.14.1           gribex/340               json-fortran/7.1.0_recom netcdf/4.7.1_recom       pnetcdf/1.12.0           zlib/1.2.11              
+
+ifort (IFORT) 18.0.5 20180823
+Copyright (C) 1985-2018 Intel Corporation.  All rights reserved.
+
+/tmp/ifortzhxoS3.i90: catastrophic error: **Internal compiler error: segmentation violation signal raised** Please report this error along with the circumstances in which it occurred in a Software Problem Report.  Note: File and line given may not be explicit cause of this error.
+compilation aborted for atlas-arpege_f.F90 (code 1)
+kmarguina@eponalogin0:~/bug-intel\[marguina@eponalogin0 bug-intel]$ 
+kmarguina@eponalogin0:~/bug-intel\[marguina@eponalogin0 bug-intel]$ 
+kmarguina@eponalogin0:~/bug-intel\[marguina@eponalogin0 bug-intel]$ exit
+
+Script done on Thu 26 Mar 2020 03:46:23 PM UTC

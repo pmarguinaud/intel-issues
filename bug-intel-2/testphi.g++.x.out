@@ -1,0 +1,215 @@
+compare        1 and        0
+compare        1 and        0
+compare        2 and        0
+compare        2 and        1
+compare        3 and        0
+compare        3 and        2
+compare        4 and        0
+compare        4 and        3
+compare        5 and        0
+compare        5 and        4
+compare        6 and        0
+compare        6 and        5
+compare        8 and        7
+compare        8 and        7
+compare        9 and        7
+compare        9 and        8
+compare       10 and        7
+compare       10 and        9
+compare       11 and        7
+compare       11 and       10
+compare       12 and        7
+compare       12 and       11
+compare       13 and        7
+compare       13 and       12
+compare       15 and       14
+compare       15 and       14
+compare       16 and       14
+compare       16 and       15
+compare       17 and       14
+compare       17 and       16
+compare       18 and       14
+compare       18 and       17
+compare       19 and       14
+compare       19 and       18
+compare       20 and       14
+compare       20 and       19
+compare       22 and       21
+compare       22 and       21
+compare       23 and       21
+compare       23 and       22
+compare       24 and       21
+compare       24 and       23
+compare        7 and        0
+compare        7 and        1
+compare        7 and        2
+compare        7 and        3
+compare        7 and        4
+compare        7 and        5
+compare        7 and        6
+compare       21 and       14
+compare       21 and       15
+compare       21 and       16
+compare       21 and       17
+compare       21 and       18
+compare       21 and       19
+compare       21 and       20
+compare       14 and        0
+compare       14 and        1
+compare       14 and        2
+compare       14 and        3
+compare       14 and        4
+compare       14 and        5
+compare       14 and        6
+compare       14 and        7
+compare       14 and        8
+compare       14 and        9
+compare       14 and       10
+compare       14 and       11
+compare       14 and       12
+compare       14 and       13
+compare       26 and       25
+compare       26 and       25
+compare       27 and       25
+compare       27 and       26
+compare       28 and       25
+compare       28 and       27
+compare       29 and       25
+compare       29 and       28
+compare       30 and       25
+compare       30 and       29
+compare       31 and       25
+compare       31 and       30
+compare       33 and       32
+compare       33 and       32
+compare       34 and       32
+compare       34 and       33
+compare       35 and       32
+compare       35 and       34
+compare       36 and       32
+compare       36 and       35
+compare       37 and       32
+compare       37 and       36
+compare       38 and       32
+compare       38 and       37
+compare       40 and       39
+compare       40 and       39
+compare       41 and       39
+compare       41 and       40
+compare       42 and       39
+compare       42 and       41
+compare       43 and       39
+compare       43 and       42
+compare       44 and       39
+compare       44 and       43
+compare       45 and       39
+compare       45 and       44
+compare       47 and       46
+compare       47 and       46
+compare       48 and       46
+compare       48 and       47
+compare       49 and       46
+compare       49 and       48
+compare       32 and       25
+compare       32 and       26
+compare       32 and       27
+compare       32 and       28
+compare       32 and       29
+compare       32 and       30
+compare       32 and       31
+compare       46 and       39
+compare       46 and       40
+compare       46 and       41
+compare       46 and       42
+compare       46 and       43
+compare       46 and       44
+compare       46 and       45
+compare       39 and       25
+compare       39 and       26
+compare       39 and       27
+compare       39 and       28
+compare       39 and       29
+compare       39 and       30
+compare       39 and       31
+compare       39 and       32
+compare       39 and       33
+compare       39 and       34
+compare       39 and       35
+compare       39 and       36
+compare       39 and       37
+compare       39 and       38
+compare       25 and        0
+compare       25 and        1
+compare       25 and        2
+compare       25 and        3
+compare       25 and        4
+compare       25 and        5
+compare       25 and        6
+compare       25 and        7
+compare       25 and        8
+compare       25 and        9
+compare       25 and       10
+compare       25 and       11
+compare       25 and       12
+compare       25 and       13
+compare       25 and       14
+compare       25 and       15
+compare       25 and       16
+compare       25 and       17
+compare       25 and       18
+compare       25 and       19
+compare       25 and       20
+compare       25 and       21
+compare       25 and       22
+compare       25 and       23
+compare       25 and       24
+        0    52366
+        1    52366
+        2    52367
+        3    52367
+        4    52368
+        5    52368
+        6    52368
+        7    52369
+        8    52369
+        9    52369
+       10    52370
+       11    52370
+       12    52371
+       13    52371
+       14    52371
+       15    52372
+       16    52372
+       17    52372
+       18    52373
+       19    52373
+       20    52373
+       21    52374
+       22    52374
+       23    52375
+       24    52375
+       25    52375
+       26    52376
+       27    52376
+       28    52377
+       29    52377
+       30    52377
+       31    52378
+       32    52378
+       33    52378
+       34    52379
+       35    52379
+       36    52380
+       37    52380
+       38    52380
+       39    52381
+       40    52381
+       41    52381
+       42    52382
+       43    52382
+       44    52383
+       45    52383
+       46    52383
+       47    52384
+       48    52384
+       49    52384
