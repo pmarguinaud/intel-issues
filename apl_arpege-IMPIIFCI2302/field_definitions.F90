@@ -1158,568 +1158,524 @@ class(field_metadata),    intent(in)    :: this
 type(type_fvar), ALLOCATABLE, intent(inout) :: metadata(:)
 integer(kind=jpim),       intent(  out) :: kleveltypes
 integer(kind=jpim),       intent(  out) :: kdim3types
-REAL(KIND=JPHOOK)  :: ZHOOK_HANDLE
-integer(kind=jpim) :: jfid, iecv, jname
-character(len=jp_name_max_len) :: clname
-
-IF (LHOOK) CALL DR_HOOK('FIELD_DEFINITIONS:MAIN_FIELD_SET_METADATA',0,ZHOOK_HANDLE)
-kleveltypes = nleveltypes_main
-kdim3types  = ndim3types_main
-! (F5) Increment the total number of fields here
-allocate(metadata(jpnumfids))
-
-! Main field details and attributes (F6)
-
-! GMV
-call set_fvar(metadata,fid%u,'u',2,d2full,'Horizontal wind component',1,KGRIB=NGRBU)
-call set_fvar(metadata,fid%v,'v',2,d2full,'Horizontal wind component',1,KGRIB=NGRBV)
-call set_fvar(metadata,fid%div,'div',2,d2full,'Divergence',1,KGRIB=NGRBD)
-call set_fvar(metadata,fid%vor,'vor',2,d2full,'Vorticity',1,KGRIB=NGRBVO)
-call set_fvar(metadata,fid%t,'t',2,d2full,'Temperature',1,KGRIB=NGRBT)
-call set_fvar(metadata,fid%pd,'pd',2,d2full,'Pressure Departure (NH only)',1)
-call set_fvar(metadata,fid%vd,'vd',2,d2full,'Vertical Divergence (NH only)',1)
-call set_fvar(metadata,fid%nhx,'nhx',2,d2full,'NHX term (NH only)',1)
-call set_fvar(metadata,fid%edot,'edot',2,d2full,'?',1)
-call set_fvar(metadata,fid%vcasrs,'vcasrs',2,d2full,'?',1) ! ky: obsolete field (deep-layer models pruned)
-call set_fvar(metadata,fid%rdlasr,'rdlasr',2,d2full,'?',1) ! ky: obsolete field (deep-layer models pruned)
-call set_fvar(metadata,fid%sgrtl,'sgrtl',2,d2full,'?',1)
-call set_fvar(metadata,fid%sgrtm,'sgrtm',2,d2full,'?',1)
-call set_fvar(metadata,fid%unl,'unl',2,d2full,'?',1)
-call set_fvar(metadata,fid%unl_si,'unl_si',2,d2full,'?',1)
-call set_fvar(metadata,fid%vnl,'vnl',2,d2full,'?',1)
-call set_fvar(metadata,fid%vnl_si,'vnl_si',2,d2full,'?',1)
-call set_fvar(metadata,fid%tnl,'tnl',2,d2full,'?',1)
-call set_fvar(metadata,fid%tnl_si,'tnl_si',2,d2full,'?',1)
-call set_fvar(metadata,fid%spnl,'spnl',2,d2full,'?',1)
-call set_fvar(metadata,fid%spnl_si,'spnl_si',2,d2full,'?',1)
-call set_fvar(metadata,fid%vwvnl,'vwvnl',2,d2full,'?',1)
-call set_fvar(metadata,fid%vdnl_si,'vdnl_si',2,d2full,'?',1)
-call set_fvar(metadata,fid%pdnl,'pdnl',2,d2full,'?',1)
-call set_fvar(metadata,fid%pdnl_si,'pdnl_si',2,d2full,'?',1)
-call set_fvar(metadata,fid%gw,'gw',2,d2full,'?',1)
-call set_fvar(metadata,fid%nhy,'nhy',2,d2full,'?',1)
-call set_fvar(metadata,fid%curhs,'curhs',2,d2full,'?',1)
-call set_fvar(metadata,fid%cvrhs,'cvrhs',2,d2full,'?',1)
-call set_fvar(metadata,fid%ctrhs,'ctrhs',2,d2full,'?',1)
-call set_fvar(metadata,fid%cspdrhs,'cspdrhs',2,d2full,'?',1)
-call set_fvar(metadata,fid%csvdrhs,'csvdrhs',2,d2full,'?',1)
-call set_fvar(metadata,fid%cunl,'cunl',2,d2full,'?',1)
-call set_fvar(metadata,fid%cvnl,'cvnl',2,d2full,'?',1)
-call set_fvar(metadata,fid%ctnl,'ctnl',2,d2full,'?',1)
-call set_fvar(metadata,fid%cspnl,'cspnl',2,d2full,'?',1)
-call set_fvar(metadata,fid%cvwvnl,'cvwvnl',2,d2full,'?',1)
-call set_fvar(metadata,fid%cspdnl,'cspdnl',2,d2full,'?',1)
-call set_fvar(metadata,fid%cupt,'cupt',2,d2full,'?',1)
-call set_fvar(metadata,fid%cvpt,'cvpt',2,d2full,'?',1)
-call set_fvar(metadata,fid%ctpt,'ctpt',2,d2full,'?',1)
-call set_fvar(metadata,fid%cpdpt,'cpdpt',2,d2full,'?',1)
-call set_fvar(metadata,fid%cvdpt,'cvdpt',2,d2full,'?',1)
-call set_fvar(metadata,fid%dphi,'dphi',2,d2full,'?',1)
-call set_fvar(metadata,fid%nhxnl,'nhxnl',2,d2full,'?',1)
-call set_fvar(metadata,fid%cnhxnl,'cnhxnl',2,d2full,'?',1)
 
 
-! GFL
-call set_fvar(metadata,fid%q,   'q',    2,d2full,'Specific humidity',3,PR=RV,PRCP=RCPV,KGRIB=NGRBQ)
-call set_fvar(metadata,fid%o3,  'o3',   2,d2full,'Ozone',3,KGRIB=NGRBO3)
-call set_fvar(metadata,fid%l,   'l',    2,d2full,'Cloud liquid water content',3,PR=0.0_JPRB,PRCP=RCW,KGRIB=NGRBCLWC)
-call set_fvar(metadata,fid%i,   'i',    2,d2full,'Cloud ice content',3,PR=0.0_JPRB,PRCP=RCS,KGRIB=NGRBCIWC)
-call set_fvar(metadata,fid%a,   'a',    2,d2full,'Cloud fraction',3,KGRIB=NGRBCC)
-!call set_fvar(metadata,fid%ghg, 'ghg',  2,d2full,'Greenhouse gases',3)         ! NFTBC
-!call set_fvar(metadata,fid%grg, 'grg',  2,d2full,'Reactive gases',3)           ! NFTBC
-!call set_fvar(metadata,fid%aero,'aero', 2,d2full,'Aerosols',3)                 ! NFTBC
-call set_fvar(metadata,fid%lrch4,   'lrch4',    2,d2full,'CH4 loss rate',3,KGRIB=210071)
-call set_fvar(metadata,fid%phys,'phys ',2,d2full,'Diagnostic moist physics',3) ! NFTBC
-call set_fvar(metadata,fid%s,   's',    2,d2full,'Snow water content',3,PR=0.0_JPRB,PRCP=RCS,KGRIB=NGRBCSWC)
-call set_fvar(metadata,fid%r,   'r',    2,d2full,'Rain water content',3,PR=0.0_JPRB,PRCP=RCW,KGRIB=NGRBCRWC)
-call set_fvar(metadata,fid%g,   'g',    2,d2full,'Graupel water content',3,PR=0.0_JPRB,PRCP=RCS)
-call set_fvar(metadata,fid%h,   'h',    2,d2full,'Hail water content',3,PR=0.0_JPRB,PRCP=RCS)
-call set_fvar(metadata,fid%lconv,   'lconv',    2,d2full,'Liquid water (CONV. PART)',3,PR=0.0_JPRB,PRCP=RCW)
-call set_fvar(metadata,fid%iconv,   'iconv',    2,d2full,'Ice    water (CONV. PART)',3,PR=0.0_JPRB,PRCP=RCS)
-call set_fvar(metadata,fid%rconv,   'rconv',    2,d2full,'Rain         (CONV. PART)',3,PR=0.0_JPRB,PRCP=RCW)
-call set_fvar(metadata,fid%sconv,   'sconv',    2,d2full,'Snow         (CONV. PART)',3,PR=0.0_JPRB,PRCP=RCS)
-call set_fvar(metadata,fid%tke,   'tke',    2,d2full,'Total kinetic energy',3)
-call set_fvar(metadata,fid%tte,   'tte',    2,d2full,'Turbulent Total Energy',3)
-call set_fvar(metadata,fid%efb1,   'efb1',    2,d2full,'First variable EFB scheme',3)
-call set_fvar(metadata,fid%efb2,   'efb2',    2,d2full,'Second variable EFB scheme',3)
-call set_fvar(metadata,fid%efb3,   'efb3',    2,d2full,'Third variable EFB scheme',3)
-call set_fvar(metadata,fid%mxl,   'mxl',    2,d2full,'Prognostic mixing length',3)
-call set_fvar(metadata,fid%src,   'src',    2,d2full,'Second-order flux for AROME s"rc"/2Sigma_s2 multiplied by Lambda_3',3)
-call set_fvar(metadata,fid%lmf,   'lmf',    2,d2full,'ql from AROME shallow convection',3)
-call set_fvar(metadata,fid%imf,   'imf',    2,d2full,'qi from AROME shallow convection',3)
-call set_fvar(metadata,fid%amf,   'amf',    2,d2full,'cloud fraction from AROME shallow convection',3)
-call set_fvar(metadata,fid%shtur,   'shtur',    2,d2full,'Shear source term for turbulence',3)
-call set_fvar(metadata,fid%fqtur,   'fqtur',    2,d2full,'Flux form source term for turbulence -moisture',3)
-call set_fvar(metadata,fid%fstur,   'fstur',    2,d2full,'Flux form source term for turbulence -enthalpy',3)
-call set_fvar(metadata,fid%cvv,   'cvv',    2,d2full,'Convective Vertical Velocity',3)
-call set_fvar(metadata,fid%rkth,   'rkth',    2,d2full,'Rasch-Kristjansson H tendency',3)
-call set_fvar(metadata,fid%rktqv,   'rktqv',    2,d2full,'Rasch-Kristjansson Qv tendency',3)
-call set_fvar(metadata,fid%rktqc,   'rktqc',    2,d2full,'Rasch-Kristjansson Qc tendency',3)
-call set_fvar(metadata,fid%cpf,   'cpf',    2,d2full,'Convective Precipitation Flux',3)
-call set_fvar(metadata,fid%spf,   'spf',    2,d2full,' Stratiform Precipitation Flux',3)
-call set_fvar(metadata,fid%cvgq,   'cvgq',    2,d2full,'Moisture Convergence for french physics',3)
-call set_fvar(metadata,fid%uom,   'uom',    2,d2full,'Updraught vert velocity ',3)
-call set_fvar(metadata,fid%ual,   'ual',    2,d2full,'Updraught mesh fraction ',3)
-call set_fvar(metadata,fid%dom,   'dom',    2,d2full,'Downdraught vert velocity ',3)
-call set_fvar(metadata,fid%dal,   'dal',    2,d2full,'Downdraught mesh fraction ',3)
-call set_fvar(metadata,fid%uen,   'uen',    2,d2full,'Updraught entrainment ',3)
-call set_fvar(metadata,fid%unebh,   'unebh',    2,d2full,'pseudo-historic convective ',3)
-call set_fvar(metadata,fid%lrad,   'lrad',    2,d2full,'Radiative cloud Liquid water',3)
-call set_fvar(metadata,fid%irad,   'irad',    2,d2full,'Radiative cloud Ice water',3)
-call set_fvar(metadata,fid%rspec,   'rspec',    2,d2full,'Specific gas constant',3)
-call set_fvar(metadata,fid%extra3d,  'extra3d',   3,d2full,'Extra 3D fields',3,kdim3_type=d3extra3d)
-call set_fvar(metadata,fid%ezdiag,   'ezdiag',    3,d2full,'Easy diagnostics?',3,kdim3_type=d3ezdiag)
-! Pressure
-call set_fvar(metadata,fid%pre, 'pre', 2,d2half,'Half level pressure',0)
-call set_fvar(metadata,fid%pref,'pref',2,d2full,'Full level pressure',0)
-call set_fvar(metadata,fid%delp,'delp',2,d2full,'Pressure difference across layers',0)
-! GMVS
-call set_fvar(metadata,fid%sp,'sp',1,d2none,'Surface pressure (GMVS)',2,KGRIB=NGRBLNSP)
-call set_fvar(metadata,fid%csppt,'csppt',1,d2none,'?',2)
-call set_fvar(metadata,fid%dbbc,'dbbc',1,d2none,'?',2)
-call set_fvar(metadata,fid%gws,'gws',1,d2none,'?',2)
-call set_fvar(metadata,fid%csprhs,'csprhs',1,d2none,'?',2)
-call set_fvar(metadata,fid%cspnl2,'cspnl2',1,d2none,'?',2)
-call set_fvar(metadata,fid%spnl2,'spnl2',1,d2none,'?',2)
-call set_fvar(metadata,fid%prehyds,'prehyds',1,d2none,'?',2)
-do iecv=1, jp_necv_2d_max
-  jfid=fid%extcv2d+iecv-1
-  write (clname, fmt='("extcv2d_var_ ",I3.3)') jfid
-  call set_fvar(metadata,jfid,clname,1,d2none,'Extended control variable 2D',0)
-enddo
-do iecv=1, jp_necv_3d_max
-  jfid=fid%extcv3d+iecv-1
-  write (clname, fmt='("extcv3d_var_ ",I3.3)') jfid
-  call set_fvar(metadata,jfid,clname,2,d2full,'Extended control variable 3D',0)
-enddo
-
-call set_fvar(metadata,fid%u_mean,'u_mean',0,d2full,'?',13)
-call set_fvar(metadata,fid%v_mean,'v_mean',0,d2full,'?',13)
-! Constants
-call set_fvar(metadata,fid%orog,  'orog',  1,d2none,'Orography',0) 
-call set_fvar(metadata,fid%cori,  'cori',  1,d2none,'Coriolis parameter',0) 
-call set_fvar(metadata,fid%gnordl,'gnordl',1,d2none,'Zonal component of vector directed towards geographic North',0)
-call set_fvar(metadata,fid%gnordm,'gnordm',1,d2none,'Meridional component of vector directed towards geographic North',0) 
-! Cloud
-call set_fvar(metadata,fid%ccc,   'ccc',   1,d2none,'Convective cloud cover',0) 
-call set_fvar(metadata,fid%lcc,   'lcc',   1,d2none,'Low cloud cover',0) 
-call set_fvar(metadata,fid%mcc,   'mcc',   1,d2none,'Middle cloud cover',0) 
-call set_fvar(metadata,fid%hcc,   'hcc',   1,d2none,'High cloud cover',0) 
-call set_fvar(metadata,fid%tcc,   'tcc',   1,d2none,'Total cloud cover',0) 
-! Surface
-! Group SB
-call set_fvar(metadata,fid%sb_t,'sb_t',2,d2soil,'temperature (group SB=SOILB)',11)
-call set_fvar(metadata,fid%sb_q,'sb_q',2,d2soil,'Liquid water content (group SB=SOILB)',11)
-call set_fvar(metadata,fid%sb_tl,'sb_tl',2,d2soil,'ice water content (for MF)(group SB=SOILB)',11)
-! Group SG
-call set_fvar(metadata,fid%sg_f,'sg_f',2,d2snow,'Content of surface snow (group SG=SNOWG)',12,kgrib=NGRBSD)
-call set_fvar(metadata,fid%sg_a,'sg_a',2,d2snow,'Snow albedo (group SG=SNOWG)',12,kgrib=NGRBASN)
-call set_fvar(metadata,fid%sg_r,'sg_r',2,d2snow,'Snow density (group SG=SNOWG)',12,kgrib=NGRBRSN)
-call set_fvar(metadata,fid%sg_t,'sg_t',2,d2snow,'Total albedo (diagnostic for MF for LVGSN) (group SG=SNOWG)',12,kgrib=NGRBTSN)
-call set_fvar(metadata,fid%sg_w,'sg_w',2,d2snow,'Snow liquid water content (group SG=SNOWG)',12,kgrib=NGRBWSN)
-!Group SL
-call set_fvar(metadata,fid%sl_lict,'sl_lict',1,d2none,'lake ice temperature',13,KGRIB=NGRBLICT)
-call set_fvar(metadata,fid%sl_lmlt,'sl_lmlt',1,d2none,'lake mixed-layer temperature',13,KGRIB=NGRBLMLT)
-call set_fvar(metadata,fid%sl_ltlt,'sl_ltlt',1,d2none,'lake total layer temperature',13,KGRIB=NGRBLTLT)
-call set_fvar(metadata,fid%sl_lblt,'sl_lblt',1,d2none,'lake bottom layer temperature',13,KGRIB=NGRBLBLT)
-call set_fvar(metadata,fid%sl_lshf,'sl_lshf',1,d2none,'lake shape factor',13,KGRIB=NGRBLSHF)
-call set_fvar(metadata,fid%sl_licd,'sl_licd',1,d2none,'lake ice depth',13,KGRIB=NGRBLICD)
-call set_fvar(metadata,fid%sl_lmld,'sl_lmld',1,d2none,'lake mixed-layer depth',13,KGRIB=NGRBLMLD)
-
-! Group RR
-call set_fvar(metadata,fid%rr_t, 'rr_t', 1,d2none,'Skin temperature (Ts) (group RR=RESVR)',14,KGRIB=NGRBSKT)
-call set_fvar(metadata,fid%rr_w, 'rr_w', 1,d2none,'Superficial reservoir water content (Ws) (group RR=RESVR)',14,KGRIB=NGRBSRC)
-call set_fvar(metadata,fid%rr_fc,'rr_fc',1,d2none,'skin water content (Wl) at MF',14)
-call set_fvar(metadata,fid%rr_ic,'rr_ic',1,d2none,'Superficial reservoir ice (group RR=RESVR)',14)
-call set_fvar(metadata,fid%rr_fp1,'rr_fp1',1,d2none,'interpolated Ts for 2nd part of 927-FULLPOS',14)
-call set_fvar(metadata,fid%rr_tir, 'rr_tir', 1,d2none,'Skin temperature (Ts) (IR)',14)
-call set_fvar(metadata,fid%rr_tmw, 'rr_tmv', 1,d2none,'Skin temperature (Ts) (MW)',14)
-! Group CL
-call set_fvar(metadata,fid%cl_tcls, 'cl_tcls', 1,d2none,'2m temperature (group CL=CLS)',15)
-call set_fvar(metadata,fid%cl_hucls,'cl_hucls',1,d2none,'2m humidity (group CL=CLS)',15)
-! Group OM=OML
-call set_fvar(metadata,fid%om_to, 'om_to', 2,d2om,'OML temperature',16)
-call set_fvar(metadata,fid%om_so, 'om_so', 2,d2om,'OML salinity',16)
-call set_fvar(metadata,fid%om_uo, 'om_uo', 2,d2om,'OML U velocity',16)
-call set_fvar(metadata,fid%om_vo, 'om_vo', 2,d2om,'OML V velocity',16)
-! Group EP
-call set_fvar(metadata,fid%ep_ep,'ep_ep',1,d2none,'',17)
-! Group X2
-call set_fvar(metadata,fid%x2_x2,'x2_x2',1,d2none,'',18)
-! Group CI
-call set_fvar(metadata,fid%ci_ci,'ci_ci',1,d2none,'',19)
-! Group VF
-call set_fvar(metadata,fid%vf_z0f,  'vf_z0f',  1,d2none,'Gravity times surface roughness length (group VF=VARSF)',20,KGRIB=NGRBSR)
-call set_fvar(metadata,fid%vf_albf, 'vf_albf', 1,d2none,'Surface shortwave albedo (group VF=VARSF)',20,KGRIB=NGRBAL)
-call set_fvar(metadata,fid%vf_emisf,'vf_emisf',1,d2none,'Surface longwave emissivity (group VF=VARSF)',20)
-call set_fvar(metadata,fid%vf_getrl,'vf_getrl',1,d2none,'Standard devaition of orography (group VF=VARSF)',20,KGRIB=NGRBSDOR)
-call set_fvar(metadata,fid%vf_lsm,  'vf_lsm',  1,d2none,'Land-sea mask (group VF=VARSF)',20,KGRIB=NGRBLSM)
-call set_fvar(metadata,fid%vf_veg,  'vf_veg',  1,d2none,'Vegetation cover (group VF=VARSF)',20)
-call set_fvar(metadata,fid%vf_vrlan,  'vf_vvrlan',  1,d2none,'anisotropy of the sub-grid scale orography',20,KGRIB=NGRBISOR)
-call set_fvar(metadata,fid%vf_vrldi,  'vf_vvrldi',  1,d2none,'angle of the direction of orography with the x axis',20,KGRIB=NGRBANOR)
-call set_fvar(metadata,fid%vf_sig,  'vf_sig',  1,d2none,'characteristic orographic slope',20,KGRIB=NGRBSLOR)
-call set_fvar(metadata,fid%vf_albsf,  'vf_albsf',  1,d2none,'soil shortwave albedo',20)
-call set_fvar(metadata,fid%vf_lan,  'vf_lan',  1,d2none,'fraction of land',20)
-call set_fvar(metadata,fid%vf_sst,  'vf_sst',  1,d2none,'(open) sea surface temperature',20,KGRIB=NGRBSSTK)
-call set_fvar(metadata,fid%vf_sss,  'vf_sss',  1,d2none,'sea surface salinity',20,KGRIB=NGRBSSS)
-call set_fvar(metadata,fid%vf_lz0h,  'vf_lz0h',  1,d2none,'logarithm of roughness length for heat',20,KGRIB=NGRBLSRH)
-call set_fvar(metadata,fid%vf_cvl,  'vf_cvl',  1,d2none,'Low vegetation cover (group VF=VARSF)',20,KGRIB=NGRBCVL)
-call set_fvar(metadata,fid%vf_co2typ,'vf_co2typ', 1,d2none,'CO2 photosynthesis type for low vegetation cover (group VF=VARSF)',20,KGRIB=NGRBCO2TYP)
-call set_fvar(metadata,fid%vf_cvh,  'vf_cvh',  1,d2none,'High vegetation cover (group VF=VARSF)',20,KGRIB=NGRBCVH)
-call set_fvar(metadata,fid%vf_fwet, 'vf_fwet',  1,d2none,'Wetland fraction (group VF=VARSF)',20,KGRIB=NGRBFWET)
-call set_fvar(metadata,fid%vf_cur,  'vf_cur',  1,d2none,'Urban cover (group VF=VARSF)',20,KGRIB=NGRBCUR)
-call set_fvar(metadata,fid%vf_tvl,  'vf_tvl',  1,d2none,'Low vegetation type (group VF=VARSF)',20,KGRIB=NGRBTVL)
-call set_fvar(metadata,fid%vf_tvh,  'vf_tvh',  1,d2none,'High vegetation type (group VF=VARSF)',20,KGRIB=NGRBTVH)
-call set_fvar(metadata,fid%vf_lail, 'vf_lail', 1,d2none,'Low vegetation LAI (group VF=VARSF)',20,KGRIB=NGRBLAIL)
-call set_fvar(metadata,fid%vf_laih, 'vf_laih', 1,d2none,'High vegetation LAI (group VF=VARSF)',20,KGRIB=NGRBLAIH)
-call set_fvar(metadata,fid%vf_soty, 'vf_soty', 1,d2none,'Soil type (group VF=VARSF)',20,KGRIB=NGRBSLT)
-call set_fvar(metadata,fid%vf_clk,  'vf_clk',  1,d2none,'lake cover',20,KGRIB=NGRBCL)
-call set_fvar(metadata,fid%vf_dl,   'vf_dl',  1,d2none, 'lake depth',20,KGRIB=NGRBDL)
-call set_fvar(metadata,fid%vf_ci,   'vf_ci',   1,d2none,'Sea ice fraction (group VF=VARSF)',20,KGRIB=NGRBCI)
-call set_fvar(metadata,fid%vf_ucur, 'vf_ucur', 1,d2none,'U-component of the ocean current (group VF=VARSF)',20,KGRIB=NGRBUCUR)
-call set_fvar(metadata,fid%vf_vcur, 'vf_vcur', 1,d2none,'V-component of the ocean current (group VF=VARSF)',20,KGRIB=NGRBVCUR)
-call set_fvar(metadata,fid%vf_z0rlf,'vf_z0rlf',1,d2none,'gravity * vegetation roughness length',20)
-call set_fvar(metadata,fid%vf_cgpp,'vf_cgpp',1,d2none,'GPP bias correction factor',20)
-call set_fvar(metadata,fid%vf_crec,'vf_crec',1,d2none,'REC bias correction factor',20)
-call set_fvar(metadata,fid%vf_sdfor,'vf_sdfor',1,d2none,'SD filtered orography',20,KGRIB=NGRBSDFOR)
-call set_fvar(metadata,fid%vf_aluvp,'vf_aluvp',1,d2none,'MODIS-derived parallel albedo for UV/vis radiation (group VF=VARSF)',20,KGRIB=NGRBALUVP)
-call set_fvar(metadata,fid%vf_aluvd,'vf_aluvd',1,d2none,'MODIS-derived diffuse albedo for UV/vis radiation (group VF=VARSF)',20,KGRIB=NGRBALUVD)
-call set_fvar(metadata,fid%vf_alnip,'vf_alnip',1,d2none,'MODIS-derived parallel albedo for near-IR radiation (group VF=VARSF)',20,KGRIB=NGRBALNIP)
-call set_fvar(metadata,fid%vf_alnid,'vf_alnid',1,d2none,'MODIS-derived diffuse albedo for near-IR radiation  (group VF=VARSF)',20,KGRIB=NGRBALNID)
-call set_fvar(metadata,fid%vf_aluvi,'vf_aluvi',1,d2none,'MODIS-derived isotropic albedo coeff for UV/vis radiation (group VF=VARSF)',20,KGRIB=NGRBALUVI)
-call set_fvar(metadata,fid%vf_aluvv,'vf_aluvv',1,d2none,'MODIS-derived volumetric albedo coeff for UV/vis radiation (group VF=VARSF)',20,KGRIB=NGRBALUVV)
-call set_fvar(metadata,fid%vf_aluvg,'vf_aluvg',1,d2none,'MODIS-derived geometric albedo coeff for UV/vis radiation (group VF=VARSF)',20,KGRIB=NGRBALUVG)
-call set_fvar(metadata,fid%vf_alnii,'vf_alnii',1,d2none,'MODIS-derived isotropic albedo coeff for near-IR radiation (group VF=VARSF)',20,KGRIB=NGRBALNII)
-call set_fvar(metadata,fid%vf_alniv,'vf_alniv',1,d2none,'MODIS-derived volumetric albedo coeff for near-IR radiation (group VF=VARSF)',20,KGRIB=NGRBALNIV)
-call set_fvar(metadata,fid%vf_alnig,'vf_alnig',1,d2none,'MODIS-derived geometric albedo coeff for near-IR radiation (group VF=VARSF)',20,KGRIB=NGRBALNIG)
-call set_fvar(metadata,fid%vf_fp1 ,    'vf_fp1',1,d2none,' surface orography in the 2nd part of fullpos-927',20)
-call set_fvar(metadata,fid%vf_so2dd ,  'vf_so2dd',1,d2none,' sulphate dry dep velocity',20)
-call set_fvar(metadata,fid%vf_dmso ,   'vf_dmso',1,d2none,' oceanic DMS',20)
-call set_fvar(metadata,fid%vf_urbf ,  'vf_urbf',1,d2none,' Urban fraction',20)
-call set_fvar(metadata,fid%vf_fca1,    'vf_fca1',1,d2none,' fraction of calcite over dust 1st bin',20)
-call set_fvar(metadata,fid%vf_fca2,    'vf_fca2',1,d2none,' fraction of calcite over dust 2st bin',20)
-call set_fvar(metadata,fid%vf_aerdep,  'vf_aerdep',1,d2none,' dust emission potential',20) 
-call set_fvar(metadata,fid%vf_aerlts,  'vf_aerlts',1,d2none,' dust lifting threshold speed ',20)
-call set_fvar(metadata,fid%vf_aerscc,  'vf_aerscc',1,d2none,' dust soil clay content',20)
-call set_fvar(metadata,fid%vf_dsf,  'vf_dsf',1,d2none,' dust source function',20)
-call set_fvar(metadata,fid%vf_dsz,  'vf_dsz',1,d2none,' dust size distribution modulation',20)
-call set_fvar(metadata,fid%vf_chemflxo, 'vf_chemflxo',2,d2chemflxo,' total chemistry flux',20)
-call set_fvar(metadata,fid%vf_chemwdflx, 'vf_chemwdflx',2,d2chemwdflx,' wet deposition chemistry flux',20)
-call set_fvar(metadata,fid%vf_chemddflx, 'vf_chemddflx',2,d2chemddflx,' dry deposition chemistry flux',20)
-call set_fvar(metadata,fid%vf_chemdv,  'vf_chemdv',2,d2chemdv,' chemistry deposition velocity',20)
-call set_fvar(metadata,fid%vf_nudm,    'vf_nudm ',1,d2none,' nudging mask',20)
-call set_fvar(metadata,fid%vf_emis2d,  'vf_emis2d',2,d2emis2d,' 2D emissions for composition',20)
-call set_fvar(metadata,fid%vf_emis2daux, 'vf_emis2d',2,d2emis2daux,' 2D emission aux fields for composition',20)
-! Group VP
-call set_fvar(metadata,fid%vp_tpc,   'vp_tpc',1,d2none,'climatological deep layer temperature',21)
-call set_fvar(metadata,fid%vp_wpc,   'vp_wpc',1,d2none,'climatological deep layer moisture',21)
-
-! Group VV=VCLIV: vegetation diagnostic fields
-call set_fvar(metadata,fid%vv_arg,  'vv_arg',1,d2none,'Silt percentage within soil (group VV=VCLIV)',22)
-call set_fvar(metadata,fid%vv_sab,  'vv_sab',1,d2none,'Percentage of sand within the soil (group VV=VCLIV)',22)
-call set_fvar(metadata,fid%vv_d2,   'vv_d2',1,d2none,'soil depth',22)
-call set_fvar(metadata,fid%vv_iveg, 'vv_iveg',1,d2none,'type of vegetation',22)
-call set_fvar(metadata,fid%vv_rsmin,'vv_rsmin',1,d2none,'stomatal minimum resistance',22)
-call set_fvar(metadata,fid%vv_lai,  'vv_lai',1,d2none,'leaf area index',22)
-call set_fvar(metadata,fid%vv_hv,   'vv_hv', 1,d2none,'Resistance to evapotranspiration (group VV=VCLIV)',22)
-call set_fvar(metadata,fid%vv_z0h,  'vv_z0h',1,d2none,'Gravity times roughness length for heat (group VV=VCLIV)',22)
-call set_fvar(metadata,fid%vv_als,  'vv_als',1,d2none,'albedo of bare ground',22)
-call set_fvar(metadata,fid%vv_alv,  'vv_alv',1,d2none,'albedo of vegetation',22)
-! Group VN
-call set_fvar(metadata,fid%vn_top,'vn_top',1,d2none,'index of convective cloud top (group VN=VCLIN)',23)
-call set_fvar(metadata,fid%vn_bas,'vn_bas',1,d2none,'index of convective cloud base (group VN=VCLIN)',23)
-call set_fvar(metadata,fid%vn_acpr,'vn_acpr',1,d2none,'averaged cumulative precipitation (group VN=VCLIN)',23)
-call set_fvar(metadata,fid%vn_accpr,'vn_accpr',1,d2none,'accumulated total precipitation for assimilation (group VN=VCLIN)',23)
-call set_fvar(metadata,fid%vn_accpr5,'vn_accpr5',1,d2none,'accumulated total precipitation trajectory for assimilation (group VN=VCLIN)',23)
-! Group VH
-call set_fvar(metadata,fid%vh_tcch,'vh_tcch',1,d2none,'total convective cloudiness',24)
-call set_fvar(metadata,fid%vh_scch,'vh_scch',1,d2none,'convective cloud summit',24)
-call set_fvar(metadata,fid%vh_bcch,'vh_bcch',1,d2none,'convective cloud base',24)
-call set_fvar(metadata,fid%vh_pblh,'vh_pblh',1,d2none,'PBL height',24)
-call set_fvar(metadata,fid%vh_spsh,'vh_spsh',1,d2none,'variable for prognostic convection scheme (ALARO)',24)
-call set_fvar(metadata,fid%vh_qsh,'vh_qsh',1,d2none,'surface moisture historic variable (used by TOUCANS)',24)
-! Group VK
-call set_fvar(metadata,fid%vk_udgro,'vk_udgro',1,d2none,'ud top position (accsu)',35)
-! Group VA
-call set_fvar(metadata,fid%va_sea,'va_sea',1,d2none,'aerosol: sea',25)
-call set_fvar(metadata,fid%va_lan,'va_lan',1,d2none,'aerosol: land',25)
-call set_fvar(metadata,fid%va_soo,'va_soo',1,d2none,'aerosol: soot',25)
-call set_fvar(metadata,fid%va_des,'va_des',1,d2none,'aerosol: desert',25)
-call set_fvar(metadata,fid%va_sul,'va_sul',1,d2none,'aerosol: sulfate',25)
-call set_fvar(metadata,fid%va_vol,'va_vol',1,d2none,'aerosol: volcano',25)
-! Group VG
-call set_fvar(metadata,fid%vg_icfr,'vg_icfr',1,d2none,'sea-ice fraction',26)
-call set_fvar(metadata,fid%vg_soup,'vg_soup',1,d2none,'upward solar flux over sea-ice',26)
-call set_fvar(metadata,fid%vg_irup,'vg_irup',1,d2none,'upward IR flux over sea-ice',26)
-call set_fvar(metadata,fid%vg_chss,'vg_chss',1,d2none,'sensible heat over sea-ice',26)
-call set_fvar(metadata,fid%vg_evap,'vg_evap',1,d2none,'evaporation over sea-ice',26)
-call set_fvar(metadata,fid%vg_taux,'vg_taux',1,d2none,'U-component of stress over sea-ice',26)
-call set_fvar(metadata,fid%vg_tauy,'vg_tauy',1,d2none,'V-component of stress over sea-ice',26)
-! Group VC
-call set_fvar(metadata,fid%vc_a,'vc_a',1,d2none,'A climatological ozone profile',27)
-call set_fvar(metadata,fid%vc_b,'vc_b',1,d2none,'B climatological ozone profile',27)
-call set_fvar(metadata,fid%vc_c,'vc_c',1,d2none,'C climatological ozone profile',27)
-! Group V2
-call set_fvar(metadata,fid%v2_ocdep,'v2_ocdep',1,d2none,'bottom layer depth',28)
-call set_fvar(metadata,fid%v2_ustrc,'v2_ustrc',1,d2none,'taux clim.',28)
-call set_fvar(metadata,fid%v2_vstrc,'v2_vstrc',1,d2none,'tauy clim.',28)
-! Group V3 
-call set_fvar(metadata,fid%v3_difm,'v3_difm',1,d2none,'viscosity',29)
-call set_fvar(metadata,fid%v3_dift,'v3_dift',1,d2none,'diff. coef. of temp',29)
-call set_fvar(metadata,fid%v3_difs,'v3_difs',1,d2none,'diff. coef. of salinity',29)
-call set_fvar(metadata,fid%v3_advt,'v3_advt',1,d2none,'correction term for temp.',29)
-call set_fvar(metadata,fid%v3_advs,'v3_advs',1,d2none,'correction term for sal.',29)
-call set_fvar(metadata,fid%v3_tri0,'v3_tri0',1,d2none,'coef. for solving matrix.',29)
-call set_fvar(metadata,fid%v3_tri1,'v3_tri1',1,d2none,'coef. for solving matrix.',29)
-call set_fvar(metadata,fid%v3_swdk,'v3_swdk',1,d2none,'radiation term',29)
-call set_fvar(metadata,fid%v3_zo,'v3_zo',1,d2none,'depth of layer',29)
-call set_fvar(metadata,fid%v3_ho,'v3_ho',1,d2none,'depth of interface layer',29)
-call set_fvar(metadata,fid%v3_do,'v3_do',1,d2none,' layer thickness',29)
-call set_fvar(metadata,fid%v3_ho_inv,'v3_ho_inv',1,d2none,'1 / YHO',29)
-call set_fvar(metadata,fid%v3_uoc,'v3_uoc',1,d2none,'U velocity clim.',29)
-call set_fvar(metadata,fid%v3_voc,'v3_voc',1,d2none,'V velocity clim.',29)
-call set_fvar(metadata,fid%v3_otke,'v3_otke',1,d2none,'ocean turb. kin. energy',29)
-
-! Group VD
-call set_fvar(metadata,fid%vd_lsp,'vd_lsp',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_cp,'vd_cp',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_sf,'vd_sf',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_fzra,'vd_fzra',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_bld,'vd_bld',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_sshf,'vd_sshf',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_slhf,'vd_slhf',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_nee,'vd_nee',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_gpp,'vd_gpp',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_rec,'vd_rec',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_msl,'vd_msl',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_sp,'vd_sp',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_tcc,'vd_tcc',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_10u,'vd_10u',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_10v,'vd_10v',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_2t,'vd_2t',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_2d,'vd_2d',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_2sh,'vd_2sh',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_ssr,'vd_ssr',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_str,'vd_str',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_tsr,'vd_tsr',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_ttr,'vd_ttr',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_ewss,'vd_ewss',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_nsss,'vd_nsss',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_e,'vd_e',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_pev,'vd_pev',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_ccc,'vd_ccc',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_lcc,'vd_lcc',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_mcc,'vd_mcc',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_hcc,'vd_hcc',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_lgws,'vd_lgws',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_mgws,'vd_mgws',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_gwd,'vd_gwd',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_mx2t,'vd_mx2t',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_mn2t,'vd_mn2t',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_mx2t6,'vd_mx2t6',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_mn2t6,'vd_mn2t6',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_ro,'vd_ro',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_sro,'vd_sro',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_ssro,'vd_ssro',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_alb,'vd_alb',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_iewss,'vd_iewss',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_insss,'vd_insss',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_isshf,'vd_isshf',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_ie,'vd_ie',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_inee,'vd_inee',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_igpp,'vd_igpp',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_irec,'vd_irec',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_ich4,'vd_ich4',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_csf,'vd_csf',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_lssf,'vd_lssf',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_mxtpr,'vd_mxtpr',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_mntpr,'vd_mntpr',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_mxtpr6,'vd_mxtpr6',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_mntpr6,'vd_mntpr6',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_tpr,'vd_tpr',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_lsrr,'vd_lsrr',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_crr,'vd_crr',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_lssfr,'vd_lssfr',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_csfr,'vd_csfr',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_ptype,'vd_ptype',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_ilspf,'vd_ilspf',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_z0f,'vd_z0f',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_lz0h,'vd_lz0h',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_tcw,'vd_tcw',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_tcwv,'vd_tcwv',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_tclw,'vd_tclw',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_tciw,'vd_tciw',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_tcrw,'vd_tcrw',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_tcsw,'vd_tcsw',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_tcslw,'vd_tcslw',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_ssrd,'vd_ssrd',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_strd,'vd_strd',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_ssrdc,'vd_ssrdc',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_strdc,'vd_strdc',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_blh,'vd_blh',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_sund,'vd_sund',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_spar,'vd_spar',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_suvb,'vd_suvb',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_sfdir,'vd_sfdir',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_scdir,'vd_scdir',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_sdsrp,'vd_sdsrp',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_cape,'vd_cape',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_capes,'vd_capes',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_mucape,'vd_mucape',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_pdepl,'vd_pdepl',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_mlcape50,'vd_mlcape50',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_mlcape100,'vd_mlcape100',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_mlcin50,'vd_mlcin50',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_mlcin100,'vd_mlcin100',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_tropotp,'vd_tropotp',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_tsrc,'vd_tsrc',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_ttrc,'vd_ttrc',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_ssrc,'vd_ssrc',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_strc,'vd_strc',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_es,'vd_es',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_smlt,'vd_smlt',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_10fg,'vd_10fg',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_10fg6,'vd_10fg6',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_10fgcv,'vd_10fgcv',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_i10fg,'vd_i10fg',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_lspf,'vd_lspf',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_tco3,'vd_tco3',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_vimd,'vd_vimd',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_sparc,'vd_sparc',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_stinc,'vd_stinc',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_cbase,'vd_cbase',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_0degl,'vd_0degl',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_m10degl,'vd_m10degl',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_visih,'vd_visih',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_cin,'vd_cin',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_kindex,'vd_kindex',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_ttindex,'vd_ttindex',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_cbasea,'vd_cbasea',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_ctopc,'vd_ctopc',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_ztwetb0,'vd_ztwetb0',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_ztwetb1,'vd_ztwetb1',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_tcghg,'vd_tcghg',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_tcchem,'vd_tcchem',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_aerodiag,'vd_aerodiag',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_aero_wvl_diag,'vd_aero_vwl_diag',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_100u,'vd_100u',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_100v,'vd_100v',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_zust,'vd_zust',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_10nu,'vd_10nu',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_10nv,'vd_10nv',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_dndzn,'vd_dndzn',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_dndza,'vd_dndza',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_dctb,'vd_dctb',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_tplb,'vd_tplb',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_tplt,'vd_tplt',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_odss,'vd_odss',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_oddu,'vd_oddu',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_odom,'vd_odom',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_odbc,'vd_odbc',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_odsu,'vd_odsu',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_odni,'vd_odni',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_odam,'vd_odam',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_odsoa,'vd_odsoa',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_odvfa,'vd_odvfa',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_odvsu,'vd_odvsu',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_odtoacc,'vd_odtoacc',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_aepm1,'vd_aepm1',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_aepm25,'vd_aepm25',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_aepm10,'vd_aepm10',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_uvbed,'vd_uvbed',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_uvbedcs,'vd_uvbedcs',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_litoti,'vd_litoti',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_licgi,'vd_licgi',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_litota6,'vd_litota6',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_licga6,'vd_licga6',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_ptypeocc6,'vd_ptypeocc6',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_200u,'vd_200u',1,d2none,'',30)
-call set_fvar(metadata,fid%vd_200v,'vd_200v',1,d2none,'',30)
-
-call set_fvar(metadata,fid%vd_sdsl,'vd_sdsl',1,d2none,'',30)
-
-! Group SM
-call set_fvar(metadata,fid%sm_clbt,'sm_clbt',1,d2none,'Cloudy brightness temperature',32)
-call set_fvar(metadata,fid%sm_csbt,'sm_csbt',1,d2none,'Clear-sky brightness temperature',32)
 
 
-! Group WS
-call set_fvar(metadata,fid%ws_char,'ws_char',1,d2none,'Charnock parameter as modified by the wave model ',33,KGRIB=NGRBCHNK)
-call set_fvar(metadata,fid%ws_charhq,'ws_charhq',1,d2none,'Charnock for heat and moisture from the wave model ',33)
-call set_fvar(metadata,fid%ws_ustokes,'ws_ustokes',1,d2none,'U-component of the surface Stokes drift',33)
-call set_fvar(metadata,fid%ws_vstokes,'ws_vstokes',1,d2none,'V-component of the surface Stokes drift',33)
-call set_fvar(metadata,fid%ws_tauocx,'ws_tauocx',1,d2none,'U-component of the Momentum flux to ocean',33)
-call set_fvar(metadata,fid%ws_tauocy,'ws_tauocy',1,d2none,'V-component of the Momentum flux to ocean',33)
-call set_fvar(metadata,fid%ws_phioc,'ws_phioc',1,d2none,'Energy flux to ocean',33)
-call set_fvar(metadata,fid%ws_wsemean,'ws_wsemean',1,d2none,'Windsea variance',33)
-call set_fvar(metadata,fid%ws_wsfmean,'ws_wsfmean',1,d2none,'Windsea mean frequency',33)
-
-! Group WW
-call set_fvar(metadata,fid%ww_u10n,'ww_u10n',1,d2none,'10m neutral wind U-component passed to the wave model (WAM) ',38)
-call set_fvar(metadata,fid%ww_v10n,'ww_v10n',1,d2none,'10m neutral wind V-component passed to the wave model (WAM)',38)
-call set_fvar(metadata,fid%ww_rho,'ww_rho',1,d2none,'surface density passed to the wave model (WAM)',38)
-call set_fvar(metadata,fid%ww_zil,'ww_zil',1,d2none,'ZI/L passed to the wave model (used for gustiness in WAM)',38)
-call set_fvar(metadata,fid%ww_cif,'ww_cif',1,d2none,'Sea ice fraction passed to the wave model (WAM)',38)
-call set_fvar(metadata,fid%ww_clk,'ww_clk',1,d2none,'Lake cover passed to the wave model (WAM)',38)
-call set_fvar(metadata,fid%ww_ucurw,'ww_ucurw',1,d2none,'Ocean current    U-component passed to the wave model (WAM)',38)
-call set_fvar(metadata,fid%ww_vcurw,'ww_vcurw',1,d2none,'Ocean current    V-component passed to the wave model (WAM)',38)
-
-! Group VX
-call set_fvar(metadata,fid%vx_oro,'vx_oro',1,d2none,'Climatological surface geopotential (group VX=VCLIX)',34)
-call set_fvar(metadata,fid%vx_tsc,'vx_tsc',1,d2none,'climatological surface temperature',34)
-call set_fvar(metadata,fid%vx_pws,'vx_pws',1,d2none,'climatological surface max. prop. moisture',34)
-call set_fvar(metadata,fid%vx_pwp,'vx_pwp',1,d2none,'climatological deep soil max. prop. moisture',34)
-call set_fvar(metadata,fid%vx_sno,'vx_sno',1,d2none,'Climatological snow cover (group VX=VCLIX)',34)
-call set_fvar(metadata,fid%vx_tpc,'vx_tpc',1,d2none,'climatological deep soil temperature',34)
-call set_fvar(metadata,fid%vx_sab,'vx_sab',1,d2none,'climatologic percentage of sand within the soil',34)
-call set_fvar(metadata,fid%vx_xd2,'vx_xd2',1,d2none,'climatologic soil depth',34)
-call set_fvar(metadata,fid%vx_lsm,'vx_lsm',1,d2none,'climatologic land sea mask',34)
-call set_fvar(metadata,fid%vx_iveg,'vx_iveg',1,d2none,'climatologic type of vegetation',34)
-call set_fvar(metadata,fid%vx_arg,'vx_arg',1,d2none,'silt percentage within soil',34)
-call set_fvar(metadata,fid%vx_rsmin,'vx_rsmin',1,d2none,'climatologic stomatal minimum resistance',34)
-call set_fvar(metadata,fid%vx_lai,'vx_lai',1,d2none,'leaf area index',34)
-call set_fvar(metadata,fid%vx_veg,'vx_veg',1,d2none,'vegetation cover',34)
 
 
-! Dynamically-assigned COMPO fields in GFL
-do jname=1,ndyn_names !                    compo_3d_first,compo_3d_first+ndyn_names-1
-  jfid = jname+compo_3d_first-1
-  write(nulout,*) 'dynamic set_fvar ',jfid,dyn_nam(jname)%cname
-  call set_fvar(metadata,jfid,dyn_nam(jname)%cname,2,d2full,dyn_nam(jname)%clongname,3,kgrib=dyn_nam(jname)%igribcode)
-enddo
-do jfid=compo_3d_first+ndyn_names, compo_3d_last
-  write (clname, fmt='("compo_3d_",I5.5)') jfid-compo_3d_first+1
-  call set_fvar(metadata,jfid,clname,2,d2full,'Atomospheric composition 3D field',3)
-enddo
 
 
-! Canari 2D and 3D model errors
-call set_fvar(metadata,fid%est,'est',1,d2none,'2D model errors statistics',0)
-call set_fvar(metadata,fid%esn,'esn',1,d2none,'2D model errors statistics',0)
-call set_fvar(metadata,fid%et2,'et2',1,d2none,'2D model errors statistics',0)
-call set_fvar(metadata,fid%eh2,'eh2',1,d2none,'2D model errors statistics',0)
-call set_fvar(metadata,fid%ev1,'ev1',1,d2none,'2D model errors statistics',0)
-call set_fvar(metadata,fid%ez, 'ez', 2,d2full,'3D model errors statistics',0)
-call set_fvar(metadata,fid%eh, 'eh', 2,d2full,'3D model errors statistics',0)
-! SLB2 fields (whatever they are - NFTBC AJG)
-call set_fvar(metadata,fid%vvel,'vvel',2,d2full,'Vertical velocity',0)
 
-IF (LHOOK) CALL DR_HOOK('FIELD_DEFINITIONS:MAIN_FIELD_SET_METADATA',1,ZHOOK_HANDLE)
+
+
+
+
+
+
+
+
+
+
+ 
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 end subroutine main_field_set_metadata
 
 function main_field_get_clevtype(this, kleveltype) result(clevtype)
 class(field_metadata), intent(in) :: this
 integer(kind=jpim), intent(in) :: kleveltype
 character(len=3) :: clevtype
-
-select case (kleveltype)
-  case(d2full, d2half)
-    clevtype = "ML"
-  case(d2none, d2soil, d2snow, d2om, d2chemflxo, d2chemwdflx, d2chemddflx, d2chemdv, d2emis2d, d2emis2daux)
-    clevtype = "SFC"
-  case default
-    call abor1("field_definitions:main_field_get_clevtype: unknown level type")
-end select
 
 end function main_field_get_clevtype
 
@@ -1732,1053 +1688,35 @@ end function main_field_get_clevtype
 ! large.
 ! -------------------------------------------------
 subroutine main_field_map_storage(this, kid, storage_1d, storage_2d, storage_3d, ld_nullify)
-
 class(field_access),               intent(inout) :: this
 integer(kind=jpim),                intent(in)    :: kid
 real(kind=jprb), optional, target, intent(in)    :: storage_1d(:), storage_2d(:,:),storage_3d(:,:,:)
-logical, optional,                 intent(in)    :: ld_nullify 
-
-logical :: ll_nullify
-real(kind=jprb), pointer :: z1d(:), z2d(:,:),z3d(:,:,:)
-REAL(KIND=JPHOOK)    :: ZHOOK_HANDLE
-
-IF (LHOOK) CALL DR_HOOK('FIELD_DEFINITIONS:MAIN_FIELD_MAP_STORAGE',0,ZHOOK_HANDLE)
-ll_nullify = .false.
-if (present(ld_nullify)) ll_nullify = ld_nullify
-
-if(ll_nullify) then
-  z1d=>null()
-  z2d=>null()
-  z3d=>null()
-else
-  if(present(storage_1d)) z1d => storage_1d
-  if(present(storage_2d)) z2d => storage_2d
-  if(present(storage_3d)) z3d => storage_3d
-endif
-
-! Field name mapping (F7)
-select case(kid)
-
-! GMV
-case(fid%u)
-  this%u => z2d 
-case(fid%v)
-  this%v => z2d 
-case(fid%div)
-  this%div => z2d
-case(fid%vor)
-  this%vor => z2d
-case(fid%t)
-  this%t => z2d
-case(fid%pd)
-  this%pd => z2d 
-case(fid%vd)
-  this%vd => z2d 
-case(fid%nhx)
-  this%nhx => z2d
-case(fid%edot)
-  this%edot => z2d
-case(fid%vcasrs)      ! ky: obsolete field 'vcasrs' (deep-layer models pruned)
-  this%vcasrs => z2d
-case(fid%rdlasr)      ! ky: obsolete field 'rdlasr' (deep-layer models pruned)
-  this%rdlasr => z2d
-case(fid%sgrtl)
-  this%sgrtl => z2d
-case(fid%sgrtm)
-  this%sgrtm => z2d
-case(fid%unl)
-  this%unl => z2d
-case(fid%unl_si)
-  this%unl_si => z2d
-case(fid%vnl)
-  this%vnl => z2d
-case(fid%vnl_si)
-  this%vnl_si => z2d
-case(fid%tnl)
-  this%tnl => z2d
-case(fid%tnl_si)
-  this%tnl_si => z2d
-case(fid%spnl)
-  this%spnl => z2d
-case(fid%spnl_si)
-  this%spnl_si => z2d
-case(fid%vwvnl)
-  this%vwvnl => z2d
-case(fid%vdnl_si)
-  this%vdnl_si => z2d
-case(fid%pdnl)
-  this%pdnl => z2d
-case(fid%pdnl_si)
-  this%pdnl_si => z2d
-case(fid%gw)
-  this%gw => z2d
-case(fid%nhy)
-  this%nhy => z2d
-case(fid%curhs)
-  this%curhs => z2d
-case(fid%cvrhs)
-  this%cvrhs => z2d
-case(fid%ctrhs)
-  this%ctrhs => z2d
-case(fid%cspdrhs)
-  this%cspdrhs => z2d
-case(fid%csvdrhs)
-  this%csvdrhs => z2d
-case(fid%cunl)
-  this%cunl => z2d
-case(fid%cvnl)
-  this%cvnl => z2d
-case(fid%ctnl)
-  this%ctnl => z2d
-case(fid%cspnl)
-  this%cspnl => z2d
-case(fid%cvwvnl)
-  this%cvwvnl => z2d
-case(fid%cspdnl)
-  this%cspdnl => z2d
-case(fid%cupt)
-  this%cupt => z2d
-case(fid%cvpt)
-  this%cvpt => z2d
-case(fid%ctpt)
-  this%ctpt=> z2d
-case(fid%cpdpt)
-  this%cpdpt => z2d
-case(fid%cvdpt)
-  this%cvdpt => z2d
-case(fid%dphi)
-  this%dphi => z2d
-case(fid%nhxnl)
-  this%nhxnl => z2d
-case(fid%cnhxnl)
-  this%cnhxnl => z2d
-
-! GFL      
-case(fid%q)
-  this%q  => z2d 
-case(fid%o3)
-  this%o3 => z2d 
-case(fid%l)
-  this%l  => z2d
-case(fid%i)
-  this%i  => z2d
-case(fid%a)
-  this%a  => z2d
-case(fid%s)
-  this%s  => z2d
-case(fid%r)
-  this%r  => z2d
-case(fid%g)
-  this%g  => z2d
-case(fid%h)
-  this%h  => z2d
-case(fid%lrch4)
-  this%lrch4 => z2d
-case(fid%lconv)
-  this%lconv  => z2d
-case(fid%iconv)
-  this%iconv  => z2d
-case(fid%rconv)
-  this%rconv  => z2d
-case(fid%sconv)
-  this%sconv  => z2d
-case(fid%tke)
-  this%tke  => z2d
-case(fid%tte)
-  this%tte  => z2d
-case(fid%efb1)
-  this%efb1  => z2d
-case(fid%efb2)
-  this%efb2  => z2d
-case(fid%efb3)
-  this%efb3  => z2d
-case(fid%mxl)
-  this%mxl  => z2d
-case(fid%src)
-  this%src  => z2d
-case(fid%lmf)
-  this%lmf  => z2d
-case(fid%imf)
-  this%imf  => z2d
-case(fid%amf)
-  this%amf  => z2d
-case(fid%shtur)
-  this%shtur  => z2d
-case(fid%fqtur)
-  this%fqtur  => z2d
-case(fid%fstur)
-  this%fstur  => z2d
-case(fid%cvv)
-  this%cvv  => z2d
-case(fid%rkth)
-  this%rkth  => z2d
-case(fid%rktqv)
-  this%rktqv  => z2d
-case(fid%rktqc)
-  this%rktqc  => z2d
-case(fid%cpf)
-  this%cpf  => z2d
-case(fid%spf)
-  this%spf  => z2d
-case(fid%cvgq)
-  this%cvgq  => z2d
-case(fid%uom)
-  this%uom  => z2d
-case(fid%ual)
-  this%ual  => z2d
-case(fid%dom)
-  this%dom  => z2d
-case(fid%dal)
-  this%dal  => z2d
-case(fid%uen)
-  this%uen  => z2d
-case(fid%unebh)
-  this%unebh  => z2d
-case(fid%lrad)
-  this%lrad  => z2d
-case(fid%irad)
-  this%irad  => z2d
-case(fid%rspec)
-  this%rspec  => z2d
-case(fid%extra3d)
-  this%extra3d  => z3d
-case(fid%ezdiag)
-  this%ezdiag  => z3d
-
-! Pressure
-case(fid%pre)
-  this%pre  => z2d
-case(fid%pref)
-  this%pref  => z2d
-case(fid%delp)
-  this%delp  => z2d
-
-! GMVS
-case(fid%sp)
-  this%sp  => z1d
-case(fid%csppt)
-  this%csppt  => z1d
-case(fid%dbbc)
-  this%dbbc  => z1d
-case(fid%gws)
-  this%gws  => z1d
-case(fid%csprhs)
-  this%csprhs => z1d
-case(fid%spnl2)
-  this%spnl2 => z1d
-case(fid%cspnl2)
-  this%cspnl2 => z1d
-case(fid%prehyds)
-  this%prehyds  => z1d
-
-! mean winds for lelem
-case(fid%u_mean)
-  this%u_mean => z1d
-case(fid%v_mean)
-  this%v_mean => z1d
-
-! Constants
-case(fid%orog)
-  this%orog  => z1d
-case(fid%cori)
-  this%cori  => z1d
-case(fid%gnordl)
-  this%gnordl  => z1d
-case(fid%gnordm)
-  this%gnordm  => z1d
-
-!Cloud
-case(fid%ccc)
-  this%ccc  => z1d
-case(fid%lcc)
-  this%lcc  => z1d
-case(fid%mcc)
-  this%mcc  => z1d
-case(fid%hcc)
-  this%hcc  => z1d
-case(fid%tcc)
-  this%tcc  => z1d
-
-! Surface
-
-! Group SB
-case(fid%sb_t)
-  this%sb_t  => z2d
-case(fid%sb_q)
-  this%sb_q  => z2d
-case(fid%sb_tl)
-  this%sb_tl  => z2d
-
-! Group SG
-case(fid%sg_f)
-  this%sg_f  => z2d
-case(fid%sg_a)
-  this%sg_a  => z2d
-case(fid%sg_r)
-  this%sg_r  => z2d
-case(fid%sg_t)
-  this%sg_t  => z2d
-case(fid%sg_w)
-  this%sg_w  => z2d
-
-! Group SL
-case(fid%sl_lict)
-  this%sl_lict  => z1d
-case(fid%sl_lmlt)
-  this%sl_lmlt  => z1d
-case(fid%sl_ltlt)
-  this%sl_ltlt  => z1d
-case(fid%sl_lblt)
-  this%sl_lblt  => z1d
-case(fid%sl_lshf)
-  this%sl_lshf  => z1d
-case(fid%sl_licd)
-  this%sl_licd  => z1d
-case(fid%sl_lmld)
-  this%sl_lmld  => z1d
-
-! Group RR
-case(fid%rr_t)
-  this%rr_t  => z1d
-case(fid%rr_w)
-  this%rr_w  => z1d
-case(fid%rr_fc)
-  this%rr_fc => z1d
-case(fid%rr_ic)
-  this%rr_ic => z1d
-case(fid%rr_fp1)
-  this%rr_fp1 => z1d
-
-! Group CL
-case(fid%cl_tcls)
-  this%cl_tcls  => z1d
-case(fid%cl_hucls)
-  this%cl_hucls  => z1d
-
-! Group OM
-case(fid%om_to)
-  this%om_to  => z2d
-case(fid%om_so)
-  this%om_so  => z2d
-case(fid%om_uo)
-  this%om_uo  => z2d
-case(fid%om_vo)
-  this%om_vo  => z2d
-
-! Group EP
-case(fid%ep_ep)
-  this%ep_ep  => z2d
-
-! Group X2
-case(fid%x2_x2)
-  this%x2_x2  => z2d
-
-! Group CI
-case(fid%ci_ci)
-  this%ci_ci  => z2d
-
-! Group VF
-case(fid%vf_z0f)
-  this%vf_z0f  => z1d
-case(fid%vf_albf)
-  this%vf_albf  => z1d
-case(fid%vf_emisf)
-  this%vf_emisf  => z1d
-case(fid%vf_getrl)
-  this%vf_getrl  => z1d
-case(fid%vf_lsm)
-  this%vf_lsm  => z1d
-case(fid%vf_veg)
-  this%vf_veg  => z1d
-case(fid%vf_vrlan)
-  this%vf_vrlan  => z1d
-case(fid%vf_vrldi)
-  this%vf_vrldi  => z1d
-case(fid%vf_sig)
-  this%vf_sig  => z1d
-case(fid%vf_albsf)
-  this%vf_albsf  => z1d
-case(fid%vf_lan)
-  this%vf_lan  => z1d
-case(fid%vf_sst)
-  this%vf_sst  => z1d
-case(fid%vf_sss)
-  this%vf_sss => z1d
-case(fid%vf_lz0h)
-  this%vf_lz0h  => z1d
-case(fid%vf_cvl)
-  this%vf_cvl  => z1d
-case(fid%vf_co2typ)
-  this%vf_co2typ  => z1d
-case(fid%vf_cvh)
-  this%vf_cvh  => z1d
-case(fid%vf_fwet)
-  this%vf_fwet  => z1d
-case(fid%vf_cur)
-  this%vf_cur  => z1d
-case(fid%vf_tvl)
-  this%vf_tvl  => z1d
-case(fid%vf_tvh)
-  this%vf_tvh  => z1d
-case(fid%vf_lail)
-  this%vf_lail  => z1d
-case(fid%vf_laih)
-  this%vf_laih  => z1d
-case(fid%vf_soty)
-  this%vf_soty  => z1d
-case(fid%vf_clk)
-  this%vf_clk  => z1d
-case(fid%vf_dl)
-  this%vf_dl  => z1d
-case(fid%vf_ci)
-  this%vf_ci  => z1d
-case(fid%vf_ucur)
-  this%vf_ucur  => z1d
-case(fid%vf_vcur)
-  this%vf_vcur  => z1d
-case(fid%vf_z0rlf)
-  this%vf_z0rlf  => z1d
-case(fid%vf_cgpp)
-  this%vf_cgpp  => z1d
-case(fid%vf_crec)
-  this%vf_crec  => z1d
-case(fid%vf_sdfor)
-  this%vf_sdfor  => z1d
-case(fid%vf_aluvp)
-  this%vf_aluvp  => z1d
-case(fid%vf_aluvd)
-  this%vf_aluvd  => z1d
-case(fid%vf_alnip)
-  this%vf_alnip  => z1d
-case(fid%vf_alnid)
-  this%vf_alnid  => z1d
-case(fid%vf_aluvi)
-  this%vf_aluvi  => z1d
-case(fid%vf_aluvv)
-  this%vf_aluvv  => z1d
-case(fid%vf_aluvg)
-  this%vf_aluvg  => z1d
-case(fid%vf_alnii)
-  this%vf_alnii  => z1d
-case(fid%vf_alniv)
-  this%vf_alniv  => z1d
-case(fid%vf_alnig)
-  this%vf_alnig  => z1d
-case(fid%vf_fp1)
-  this%vf_fp1  => z1d
-case(fid%vf_so2dd)
-  this%vf_so2dd  => z1d
-case(fid%vf_dmso)
-  this%vf_dmso  => z1d
-case(fid%vf_urbf)
-  this%vf_urbf  => z1d
-case(fid%vf_fca1)
-  this%vf_fca1  => z1d
-case(fid%vf_fca2)
-  this%vf_fca2  => z1d
-case(fid%vf_aerdep)
-  this%vf_aerdep  => z1d
-case(fid%vf_aerlts)
-  this%vf_aerlts  => z1d
-case(fid%vf_aerscc)
-  this%vf_aerscc  => z1d
-case(fid%vf_dsf)
-  this%vf_dsf  => z1d
-case(fid%vf_dsz)
-  this%vf_dsz  => z1d
-case(fid%vf_chemflxo)
-  this%vf_chemflxo  => z2d
-case(fid%vf_chemwdflx)
-  this%vf_chemwdflx  => z2d
-case(fid%vf_chemddflx)
-  this%vf_chemddflx  => z2d
-case(fid%vf_chemdv)
-  this%vf_chemdv  => z2d
-case(fid%vf_nudm)
-  this%vf_nudm  => z1d
-case(fid%vf_emis2d)
-  this%vf_emis2d  => z2d
-case(fid%vf_emis2daux)
-  this%vf_emis2daux  => z2d
-
-! Group VP
-case(fid%vp_tpc)
-  this%vp_tpc  => z1d
-case(fid%vp_wpc)
-  this%vp_wpc  => z1d
+logical, optional,                 intent(in)    :: ld_nullify
 
 
-! Group VV
-case(fid%vv_arg)
-  this%vv_arg  => z1d
-case(fid%vv_sab)
-  this%vv_sab  => z1d
-case(fid%vv_d2)
-  this%vv_d2  => z1d
-case(fid%vv_iveg)
-  this%vv_iveg  => z1d
-case(fid%vv_rsmin)
-  this%vv_rsmin  => z1d
-case(fid%vv_lai)
-  this%vv_lai  => z1d
-case(fid%vv_hv)
-  this%vv_hv  => z1d
-case(fid%vv_z0h)
-  this%vv_z0h  => z1d
-case(fid%vv_als)
-  this%vv_als  => z1d
-case(fid%vv_alv)
-  this%vv_alv  => z1d
 
-! Group VN
-case(fid%vn_top)
-  this%vn_top  => z1d
-case(fid%vn_bas)
-  this%vn_bas  => z1d
-case(fid%vn_acpr)
-  this%vn_acpr  => z1d
-case(fid%vn_accpr)
-  this%vn_accpr  => z1d
-case(fid%vn_accpr5)
-  this%vn_accpr5  => z1d
-! Group VH
-case(fid%vh_tcch)
-  this%vh_tcch  => z1d
-case(fid%vh_scch)
-  this%vh_scch  => z1d
-case(fid%vh_bcch)
-  this%vh_bcch  => z1d
-case(fid%vh_pblh)
-  this%vh_pblh  => z1d
-case(fid%vh_spsh)
-  this%vh_spsh  => z1d
-case(fid%vh_qsh)
-  this%vh_qsh  => z1d
-! Group VK
-case(fid%vk_udgro)
-  this%vk_udgro  => z1d
-! Group VA
-case(fid%va_sea)
-  this%va_sea  => z1d
-case(fid%va_lan)
-  this%va_lan  => z1d
-case(fid%va_soo)
-  this%va_soo  => z1d
-case(fid%va_des)
-  this%va_des  => z1d
-case(fid%va_sul)
-  this%va_sul  => z1d
-case(fid%va_vol)
-  this%va_vol  => z1d
 
-! Group VG
-case(fid%vg_icfr)
-  this%vg_icfr  => z1d
-case(fid%vg_soup)
-  this%vg_soup  => z1d
-case(fid%vg_irup)
-  this%vg_irup  => z1d
-case(fid%vg_chss)
-  this%vg_chss  => z1d
-case(fid%vg_evap)
-  this%vg_evap  => z1d
-case(fid%vg_taux)
-  this%vg_taux  => z1d
-case(fid%vg_tauy)
-  this%vg_tauy  => z1d
 
-! Group VC
-case(fid%vc_a)
-  this%vc_a  => z1d
-case(fid%vc_b)
-  this%vc_b  => z1d
-case(fid%vc_c)
-  this%vc_c  => z1d
 
-! Group V2
-case(fid%v2_ocdep)
-  this%v2_ocdep  => z1d
-case(fid%v2_ustrc)
-  this%v2_ustrc  => z1d
-case(fid%v2_vstrc)
-  this%v2_vstrc  => z1d
 
-! Group V3
-case(fid%v3_difm)
-  this%v3_difm  => z2d
-case(fid%v3_dift)
-  this%v3_dift  => z2d
-case(fid%v3_difs)
-  this%v3_difs  => z2d
-case(fid%v3_advt)
-  this%v3_advt  => z2d
-case(fid%v3_advs)
-  this%v3_advs  => z2d
-case(fid%v3_tri0)
-  this%v3_tri0  => z2d
-case(fid%v3_tri1)
-  this%v3_tri1  => z2d
-case(fid%v3_swdk)
-  this%v3_swdk  => z2d
-case(fid%v3_zo)
-  this%v3_zo  => z2d
-case(fid%v3_ho)
-  this%v3_ho  => z2d
-case(fid%v3_do)
-  this%v3_do  => z2d
-case(fid%v3_ho_inv)
-  this%v3_ho_inv  => z2d
-case(fid%v3_uoc)
-  this%v3_uoc  => z2d
-case(fid%v3_voc)
-  this%v3_voc  => z2d
-case(fid%v3_otke)
-  this%v3_otke  => z2d
 
-! Group WS
-case(fid%ws_char)
-  this%ws_char  => z1d
-case(fid%ws_charhq)
-  this%ws_charhq  => z1d
-case(fid%ws_ustokes)
-  this%ws_ustokes  => z1d
-case(fid%ws_vstokes)
-  this%ws_vstokes  => z1d
-case(fid%ws_tauocx)
-  this%ws_tauocx  => z1d
-case(fid%ws_tauocy)
-  this%ws_tauocy  => z1d
-case(fid%ws_phioc)
-  this%ws_phioc  => z1d
-case(fid%ws_wsemean)
-  this%ws_wsemean  => z1d
-case(fid%ws_wsfmean)
-  this%ws_wsfmean  => z1d
 
-! Group WW
-case(fid%ww_u10n)
-  this%ww_u10n  => z1d
-case(fid%ww_v10n)
-  this%ww_v10n  => z1d
-case(fid%ww_rho)
-  this%ww_rho  => z1d
-case(fid%ww_zil)
-  this%ww_zil  => z1d
-case(fid%ww_cif)
-  this%ww_cif  => z1d
-case(fid%ww_clk)
-  this%ww_clk  => z1d
-case(fid%ww_ucurw)
-  this%ww_ucurw  => z1d
-case(fid%ww_vcurw)
-  this%ww_vcurw  => z1d
-
-! Group VD
-case(fid%vd_lsp)
-  this%vd_lsp  => z1d
-case(fid%vd_cp)
-  this%vd_cp  => z1d
-case(fid%vd_sf)
-  this%vd_sf  => z1d
-case(fid%vd_fzra)
-  this%vd_fzra  => z1d
-case(fid%vd_bld)
-  this%vd_bld  => z1d
-case(fid%vd_sshf)
-  this%vd_sshf  => z1d
-case(fid%vd_slhf)
-  this%vd_slhf  => z1d
-case(fid%vd_nee)
-  this%vd_nee  => z1d
-case(fid%vd_gpp)
-  this%vd_gpp  => z1d
-case(fid%vd_rec)
-  this%vd_rec  => z1d
-case(fid%vd_msl)
-  this%vd_msl  => z1d
-case(fid%vd_sp)
-  this%vd_sp  => z1d
-case(fid%vd_tcc)
-  this%vd_tcc  => z1d
-case(fid%vd_10u)
-  this%vd_10u  => z1d
-case(fid%vd_10v)
-  this%vd_10v  => z1d
-case(fid%vd_2t)
-  this%vd_2t  => z1d
-case(fid%vd_2d)
-  this%vd_2d  => z1d
-case(fid%vd_2sh)
-  this%vd_2sh => z1d
-case(fid%vd_ssr)
-  this%vd_ssr  => z1d
-case(fid%vd_str)
-  this%vd_str  => z1d
-case(fid%vd_tsr)
-  this%vd_tsr  => z1d
-case(fid%vd_ttr)
-  this%vd_ttr  => z1d
-case(fid%vd_ewss)
-  this%vd_ewss  => z1d
-case(fid%vd_nsss)
-  this%vd_nsss  => z1d
-case(fid%vd_e)
-  this%vd_e  => z1d
-case(fid%vd_pev)
-  this%vd_pev  => z1d
-case(fid%vd_ccc)
-  this%vd_ccc  => z1d
-case(fid%vd_lcc)
-  this%vd_lcc  => z1d
-case(fid%vd_mcc)
-  this%vd_mcc  => z1d
-case(fid%vd_hcc)
-  this%vd_hcc  => z1d
-case(fid%vd_lgws)
-  this%vd_lgws  => z1d
-case(fid%vd_mgws)
-  this%vd_mgws  => z1d
-case(fid%vd_gwd)
-  this%vd_gwd  => z1d
-case(fid%vd_mx2t)
-  this%vd_mx2t  => z1d
-case(fid%vd_mn2t)
-  this%vd_mn2t  => z1d
-case(fid%vd_mx2t6)
-  this%vd_mx2t6  => z1d
-case(fid%vd_mn2t6)
-  this%vd_mn2t6  => z1d
-case(fid%vd_ro)
-  this%vd_ro  => z1d
-case(fid%vd_sro)
-  this%vd_sro  => z1d
-case(fid%vd_ssro)
-  this%vd_ssro  => z1d
-case(fid%vd_alb)
-  this%vd_alb  => z1d
-case(fid%vd_iewss)
-  this%vd_iewss  => z1d
-case(fid%vd_insss)
-  this%vd_insss  => z1d
-case(fid%vd_isshf)
-  this%vd_isshf  => z1d
-case(fid%vd_ie)
-  this%vd_ie  => z1d
-case(fid%vd_inee)
-  this%vd_inee  => z1d
-case(fid%vd_igpp)
-  this%vd_igpp  => z1d
-case(fid%vd_irec)
-  this%vd_irec  => z1d
-case(fid%vd_ich4)
-  this%vd_ich4  => z1d
-case(fid%vd_csf)
-  this%vd_csf  => z1d
-case(fid%vd_lssf)
-  this%vd_lssf  => z1d
-case(fid%vd_mxtpr)
-  this%vd_mxtpr  => z1d
-case(fid%vd_mntpr)
-  this%vd_mntpr  => z1d
-case(fid%vd_mxtpr6)
-  this%vd_mxtpr6  => z1d
-case(fid%vd_mntpr6)
-  this%vd_mntpr6  => z1d
-case(fid%vd_tpr)
-  this%vd_tpr  => z1d
-case(fid%vd_lsrr)
-  this%vd_lsrr  => z1d
-case(fid%vd_crr)
-  this%vd_crr  => z1d
-case(fid%vd_lssfr)
-  this%vd_lssfr  => z1d
-case(fid%vd_csfr)
-  this%vd_csfr  => z1d
-case(fid%vd_ptype)
-  this%vd_ptype  => z1d
-case(fid%vd_ilspf)
-  this%vd_ilspf  => z1d
-case(fid%vd_z0f)
-  this%vd_z0f  => z1d
-case(fid%vd_lz0h)
-  this%vd_lz0h  => z1d
-case(fid%vd_tcw)
-  this%vd_tcw  => z1d
-case(fid%vd_tcwv)
-  this%vd_tcwv  => z1d
-case(fid%vd_tclw)
-  this%vd_tclw  => z1d
-case(fid%vd_tciw)
-  this%vd_tciw  => z1d
-case(fid%vd_tcrw)
-  this%vd_tcrw  => z1d
-case(fid%vd_tcsw)
-  this%vd_tcsw  => z1d
-case(fid%vd_tcslw)
-  this%vd_tcslw  => z1d
-case(fid%vd_ssrd)
-  this%vd_ssrd  => z1d
-case(fid%vd_strd)
-  this%vd_strd  => z1d
-case(fid%vd_ssrdc)
-  this%vd_ssrdc  => z1d
-case(fid%vd_strdc)
-  this%vd_strdc  => z1d
-case(fid%vd_blh)
-  this%vd_blh  => z1d
-case(fid%vd_sund)
-  this%vd_sund  => z1d
-case(fid%vd_spar)
-  this%vd_spar  => z1d
-case(fid%vd_suvb)
-  this%vd_suvb  => z1d
-case(fid%vd_sfdir)
-  this%vd_sfdir  => z1d
-case(fid%vd_scdir)
-  this%vd_scdir  => z1d
-case(fid%vd_sdsrp)
-  this%vd_sdsrp  => z1d
-case(fid%vd_cape)
-  this%vd_cape  => z1d
-case(fid%vd_capes)
-  this%vd_capes  => z1d
-case(fid%vd_mucape)
-  this%vd_mucape  => z1d
-case(fid%vd_pdepl)
-  this%vd_pdepl  => z1d
-case(fid%vd_mlcape50)
-  this%vd_mlcape50  => z1d
-case(fid%vd_mlcape100)
-  this%vd_mlcape100  => z1d
-case(fid%vd_mlcin50)
-  this%vd_mlcin50  => z1d
-case(fid%vd_mlcin100)
-  this%vd_mlcin100  => z1d
-case(fid%vd_tropotp)
-  this%vd_tropotp  => z1d
-case(fid%vd_tsrc)
-  this%vd_tsrc  => z1d
-case(fid%vd_ttrc)
-  this%vd_ttrc  => z1d
-case(fid%vd_ssrc)
-  this%vd_ssrc  => z1d
-case(fid%vd_strc)
-  this%vd_strc  => z1d
-case(fid%vd_es)
-  this%vd_es  => z1d
-case(fid%vd_smlt)
-  this%vd_smlt  => z1d
-case(fid%vd_10fg)
-  this%vd_10fg  => z1d
-case(fid%vd_10fg6)
-  this%vd_10fg6  => z1d
-case(fid%vd_10fgcv)
-  this%vd_10fgcv  => z1d
-case(fid%vd_i10fg)
-  this%vd_i10fg  => z1d
-case(fid%vd_lspf)
-  this%vd_lspf  => z1d
-case(fid%vd_tco3)
-  this%vd_tco3  => z1d
-case(fid%vd_vimd)
-  this%vd_vimd  => z1d
-case(fid%vd_sparc)
-  this%vd_sparc  => z1d
-case(fid%vd_stinc)
-  this%vd_stinc  => z1d
-case(fid%vd_cbase)
-  this%vd_cbase  => z1d
-case(fid%vd_0degl)
-  this%vd_0degl  => z1d
-case(fid%vd_m10degl)
-  this%vd_m10degl  => z1d
-case(fid%vd_visih)
-  this%vd_visih  => z1d
-case(fid%vd_cin)
-  this%vd_cin  => z1d
-case(fid%vd_kindex)
-  this%vd_kindex  => z1d
-case(fid%vd_ttindex)
-  this%vd_ttindex  => z1d
-case(fid%vd_cbasea)
-  this%vd_cbasea  => z1d
-case(fid%vd_ctopc)
-  this%vd_ctopc  => z1d
-case(fid%vd_ztwetb0)
-  this%vd_ztwetb0  => z1d
-case(fid%vd_ztwetb1)
-  this%vd_ztwetb1  => z1d
-case(fid%vd_tcghg)
-  this%vd_tcghg  => z1d
-case(fid%vd_tcchem)
-  this%vd_tcchem  => z1d
-case(fid%vd_aerodiag)
-  this%vd_aerodiag  => z2d
-case(fid%vd_aero_wvl_diag)
-  this%vd_aero_wvl_diag  => z2d
-case(fid%vd_100u)
-  this%vd_100u  => z1d
-case(fid%vd_100v)
-  this%vd_100v  => z1d
-case(fid%vd_zust)
-  this%vd_zust  => z1d
-case(fid%vd_10nu)
-  this%vd_10nu  => z1d
-case(fid%vd_10nv)
-  this%vd_10nv  => z1d
-case(fid%vd_dndzn)
-  this%vd_dndzn  => z1d
-case(fid%vd_dndza)
-  this%vd_dndza  => z1d
-case(fid%vd_dctb)
-  this%vd_dctb  => z1d
-case(fid%vd_tplb)
-  this%vd_tplb  => z1d
-case(fid%vd_tplt)
-  this%vd_tplt  => z1d
-case(fid%vd_odss)
-  this%vd_odss  => z1d
-case(fid%vd_oddu)
-  this%vd_oddu  => z1d
-case(fid%vd_odom)
-  this%vd_odom  => z1d
-case(fid%vd_odbc)
-  this%vd_odbc  => z1d
-case(fid%vd_odsu)
-  this%vd_odsu  => z1d
-case(fid%vd_odsoa)
-  this%vd_odsoa  => z1d
-case(fid%vd_odni)
-  this%vd_odni  => z1d
-case(fid%vd_odam)
-  this%vd_odam  => z1d
-case(fid%vd_odvfa)
-  this%vd_odvfa  => z1d
-case(fid%vd_odtoacc)
-  this%vd_odtoacc  => z1d
-case(fid%vd_odvsu)
-  this%vd_odvsu  => z1d
-case(fid%vd_aepm1)
-  this%vd_aepm1  => z1d
-case(fid%vd_aepm25)
-  this%vd_aepm25  => z1d
-case(fid%vd_aepm10)
-  this%vd_aepm10  => z1d
-case(fid%vd_uvbed)
-  this%vd_uvbed  => z1d
-case(fid%vd_uvbedcs)
-  this%vd_uvbedcs  => z1d
-case(fid%vd_litoti)
-  this%vd_litoti  => z1d
-case(fid%vd_licgi)
-  this%vd_licgi  => z1d
-case(fid%vd_litota6)
-  this%vd_litota6 => z1d
-case(fid%vd_licga6)
-  this%vd_licga6  => z1d
-case(fid%vd_ptypeocc6)
-  this%vd_ptypeocc6  => z2d
-case(fid%vd_200u)
-  this%vd_200u  => z1d
-case(fid%vd_200v)
-  this%vd_200v  => z1d
-case(fid%vd_sdsl)
-  this%vd_sdsl  => z1d
-
-! Group SM
-case(fid%sm_clbt)
-  this%sm_clbt  => z2d
-case(fid%sm_csbt)
-  this%sm_csbt  => z2d
-
-! Group VX
-case(fid%vx_oro)
-  this%vx_oro   => z1d
-case(fid%vx_tsc)
-  this%vx_tsc   => z1d
-case(fid%vx_pws)
-  this%vx_pws   => z1d
-case(fid%vx_pwp)
-  this%vx_pwp   => z1d
-case(fid%vx_sno)
-  this%vx_sno   => z1d
-case(fid%vx_tpc)
-  this%vx_tpc   => z1d
-case(fid%vx_sab)
-  this%vx_sab   => z1d
-case(fid%vx_xd2)
-  this%vx_xd2   => z1d
-case(fid%vx_lsm)
-  this%vx_lsm   => z1d
-case(fid%vx_iveg)
-  this%vx_iveg  => z1d
-case(fid%vx_arg)
-  this%vx_arg   => z1d
-case(fid%vx_rsmin)
-  this%vx_rsmin => z1d
-case(fid%vx_lai)
-  this%vx_lai   => z1d
-case(fid%vx_veg)
-  this%vx_veg   => z1d
-
-! SLB2
-case(fid%vvel)
-  this%vvel   => z2d
-
-case default
-
-  call abor1('Missing variable in pointer mapping case statement')
-
-end select
-IF (LHOOK) CALL DR_HOOK('FIELD_DEFINITIONS:MAIN_FIELD_MAP_STORAGE',1,ZHOOK_HANDLE)
 
 end subroutine main_field_map_storage
 
 subroutine read_dynamic_namespace
-character(len=:),allocatable    :: clf_name
-logical :: ll_exists
-integer(kind=jpim) :: IUTMP=77,II,io_status,igrib,jj
-character(len=JP_NAME_MAX_LEN) :: clname
-character(len=JP_COMMENTS_MAX_LEN) :: clongname
-REAL(KIND=JPHOOK)    :: ZHOOK_HANDLE
 
-IF (LHOOK) CALL DR_HOOK('FIELD_DEFINITIONS:READ_DYNAMIC_NAMESPACE',0,ZHOOK_HANDLE)
 
-if(ndyn_names > 0) call abor1('field_definitions:read_dynamic_namespace - Can only be called once')
-clf_name='dynamic_namespace'
-inquire(file=clf_name,exist=ll_exists)
-if(ll_exists) then
-  OPEN(IUTMP,FILE=clf_name,FORM='FORMATTED',ACTION='READ',STATUS='OLD')
-  ii = 0
-  write(nulout,'(A,11X,A,26X,2A)') ' NAME',' COMMENT ','GRIBCODE',' FID'
-  write(nulout,'(A,11X,A,26X,2A)') ' ----',' ------- ','--------',' ---'
-  do
-    read(iutmp,*,iostat=io_status)clname, clongname,igrib 
-    if(io_status < 0) exit
-    do jj=1,ii
-      if(clname == dyn_nam(jj)%cname) then
-        write(nulout,*) 'field_definitions:read_dynamic_namespace - duplicate name',clname
-        call abor1('field_definitions:read_dynamic_namespace - duplicate name')
-      endif
-    enddo
-    ii = ii+1
-    if(compo_3d_first+ii-1 > compo_3d_last) then
-      call abor1('field_definitions:read_dynamic_namespace - too many dynamic names')
-    endif
-    dyn_nam(ii)%ifid=compo_3d_first+ii-1
-    dyn_nam(ii)%cname=clname
-    dyn_nam(ii)%clongname=clongname
-    dyn_nam(ii)%igribcode=igrib
-    write(nulout,'(1X,A,A,I8,1X,I6)') dyn_nam(ii)%cname,dyn_nam(ii)%clongname(1:32),dyn_nam(ii)%igribcode,&
-     & dyn_nam(ii)%ifid
-  enddo
-  ndyn_names = ii
-  write(nulout,*) 'FIELD_DEFINITIONS:READ_DYNAMIC_NAMESPACE - NAMES READ=',ndyn_names
-else
-  write(nulout,*) 'FIELD_DEFINITIONS:READ_DYNAMIC_NAMESPACE - No namspace file (',clf_name,') found'
-endif
 
-IF (LHOOK) CALL DR_HOOK('FIELD_DEFINITIONS:READ_DYNAMIC_NAMESPACE',1,ZHOOK_HANDLE)
+
+
+
+
+
+
+
+
+
 end subroutine read_dynamic_namespace
 end module field_definitions
 
