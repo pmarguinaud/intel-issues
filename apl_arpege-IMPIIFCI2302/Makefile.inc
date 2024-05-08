@@ -1,3 +1,3 @@
 SRC=.
-FC=gfortran -g -O0
+FC=ifort -g -O0
 
