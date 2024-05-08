@@ -34,14 +34,9 @@
 
 module radiation_lw_derivatives
 
-  public
+  
 
 ! Allow size of inner dimension (number of g-points) to be known at compile time if NG_LW is defined
-#ifdef NG_LW
-  integer, parameter, private :: ng = NG_LW
-#else
-#define ng ng_lw_in
-#endif
 
   integer, parameter, private :: nreg = 3
 
@@ -50,342 +45,293 @@ contains
 
   !---------------------------------------------------------------------
   ! Calculation for the Independent Column Approximation
-  subroutine calc_lw_derivatives_ica(ng_lw_in, nlev, icol, transmittance, flux_up_surf, lw_derivatives)
-
-    use parkind1, only           : jprb
-#ifndef _OPENACC
-    use yomhook,  only           : lhook, dr_hook, jphook
-#endif
-
-    implicit none
-
-    ! Inputs
-    integer,    intent(in) :: ng_lw_in   ! number of spectral intervals
-    integer,    intent(in) :: nlev ! number of levels
-    integer,    intent(in) :: icol ! Index of column for output
-    real(jprb), intent(in) :: transmittance(ng,nlev)
-    real(jprb), intent(in) :: flux_up_surf(ng) ! Upwelling surface spectral flux (W m-2)
-
-    ! Output
-    real(jprb), intent(out) :: lw_derivatives(:,:) ! dimensioned (ncol,nlev+1)
-
-    ! Rate of change of spectral flux at a given height with respect
-    ! to the surface value
-    real(jprb) :: lw_derivatives_g(ng)
-
-    real(jprb) :: sum_flux_up_surf, sum_lw_derivatives_g
-
-    integer    :: jlev, jg
-
-#ifndef _OPENACC
-    real(jphook) :: hook_handle
-#endif
-
-    !$ACC ROUTINE WORKER
-
-#ifndef _OPENACC
-    if (lhook) call dr_hook('radiation_lw_derivatives:calc_lw_derivatives_ica',0,hook_handle)
-#endif
-
-    sum_flux_up_surf = 0.0_jprb
-    !$ACC LOOP WORKER VECTOR REDUCTION(+:sum_flux_up_surf)
-    do jg = 1,ng
-      sum_flux_up_surf = sum_flux_up_surf + flux_up_surf(jg)
-    end do
-
-    ! Initialize the derivatives at the surface
-    !$ACC LOOP WORKER VECTOR
-    do jg = 1,ng
-      lw_derivatives_g(jg) = flux_up_surf(jg) / sum_flux_up_surf
-    end do
-    lw_derivatives(icol, nlev+1) = 1.0_jprb
-
-    ! Move up through the atmosphere computing the derivatives at each
-    ! half-level
-    !$ACC LOOP SEQ
-    do jlev = nlev,1,-1
-      sum_lw_derivatives_g = 0.0_jprb
-      !$ACC LOOP WORKER VECTOR REDUCTION(+:sum_lw_derivatives_g)
-      do jg = 1,ng
-        lw_derivatives_g(jg) = lw_derivatives_g(jg) * transmittance(jg,jlev)
-        sum_lw_derivatives_g = sum_lw_derivatives_g + lw_derivatives_g(jg)
-      end do
-      lw_derivatives(icol,jlev) = sum_lw_derivatives_g
-    end do
-
-#ifndef _OPENACC
-    if (lhook) call dr_hook('radiation_lw_derivatives:calc_lw_derivatives_ica',1,hook_handle)
-#endif
-
-  end subroutine calc_lw_derivatives_ica
+  
 
 
   !---------------------------------------------------------------------
   ! Calculation for the Independent Column Approximation
-  subroutine modify_lw_derivatives_ica(ng_lw_in, nlev, icol, transmittance, &
-       &                               flux_up_surf, weight, lw_derivatives)
-
-    use parkind1, only           : jprb
-    use yomhook,  only           : lhook, dr_hook, jphook
-
-    implicit none
-
-    ! Inputs
-    integer,    intent(in) :: ng_lw_in   ! number of spectral intervals
-    integer,    intent(in) :: nlev ! number of levels
-    integer,    intent(in) :: icol ! Index of column for output
-    real(jprb), intent(in) :: transmittance(ng,nlev)
-    real(jprb), intent(in) :: flux_up_surf(ng) ! Upwelling surface spectral flux (W m-2)
-    real(jprb), intent(in) :: weight ! Weight new values against existing
-
-    ! Output
-    real(jprb), intent(inout) :: lw_derivatives(:,:) ! dimensioned (ncol,nlev+1)
-
-    ! Rate of change of spectral flux at a given height with respect
-    ! to the surface value
-    real(jprb) :: lw_derivatives_g(ng)
-
-    real(jprb) :: sum_flux_up_surf, sum_lw_derivatives_g
-
-    integer    :: jlev, jg
-
-#ifndef _OPENACC
-    real(jphook) :: hook_handle
-#endif
-
-    !$ACC ROUTINE WORKER
-
-#ifndef _OPENACC
-    if (lhook) call dr_hook('radiation_lw_derivatives:modify_lw_derivatives_ica',0,hook_handle)
-#endif
-
-    sum_flux_up_surf = 0.0_jprb
-    !$ACC LOOP WORKER VECTOR REDUCTION(+:sum_flux_up_surf)
-    do jg = 1,ng
-      sum_flux_up_surf = sum_flux_up_surf + flux_up_surf(jg)
-    end do
-
-    ! Initialize the derivatives at the surface
-    !$ACC LOOP WORKER VECTOR
-    do jg = 1,ng
-      lw_derivatives_g(jg) = flux_up_surf(jg) / sum_flux_up_surf
-    end do
-
-    ! This value must be 1 so no weighting applied
-    lw_derivatives(icol, nlev+1) = 1.0_jprb
-
-    ! Move up through the atmosphere computing the derivatives at each
-    ! half-level
-    !$ACC LOOP SEQ
-    do jlev = nlev,1,-1
-      sum_lw_derivatives_g = 0.0_jprb
-      !$ACC LOOP WORKER VECTOR REDUCTION(+:sum_lw_derivatives_g)
-      do jg = 1,ng
-        lw_derivatives_g(jg) = lw_derivatives_g(jg) * transmittance(jg,jlev)
-        sum_lw_derivatives_g = sum_lw_derivatives_g + lw_derivatives_g(jg)
-      end do
-      lw_derivatives(icol,jlev) = (1.0_jprb - weight) * lw_derivatives(icol,jlev) &
-           &                    + weight * sum_lw_derivatives_g
-    end do
-
-#ifndef _OPENACC
-    if (lhook) call dr_hook('radiation_lw_derivatives:modify_lw_derivatives_ica',1,hook_handle)
-#endif
-
-  end subroutine modify_lw_derivatives_ica
+  
 
 
 
   !---------------------------------------------------------------------
   ! Calculation for solvers involving multiple regions and matrices
-  subroutine calc_lw_derivatives_matrix(ng_lw_in, nlev, nreg_in, icol, transmittance, &
-       &                                u_matrix, flux_up_surf, lw_derivatives)
-
-    use parkind1, only           : jprb
-    use yomhook,  only           : lhook, dr_hook, jphook
-
-    use radiation_matrix
-
-    implicit none
-
-    ! Inputs
-    integer,    intent(in) :: ng_lw_in   ! number of spectral intervals
-    integer,    intent(in) :: nlev ! number of levels
-    integer,    intent(in) :: nreg_in ! number of regions
-    integer,    intent(in) :: icol ! Index of column for output
-    real(jprb), intent(in) :: transmittance(ng,nreg,nreg,nlev)
-    real(jprb), intent(in) :: u_matrix(nreg,nreg,nlev+1) ! Upward overlap matrix
-    real(jprb), intent(in) :: flux_up_surf(ng) ! Upwelling surface spectral flux (W m-2)
-
-    ! Output
-    real(jprb), intent(out) :: lw_derivatives(:,:) ! dimensioned (ncol,nlev+1)
-
-    ! Rate of change of spectral flux at a given height with respect
-    ! to the surface value
-    real(jprb) :: lw_derivatives_g_reg(ng,nreg)
-    real(jprb) :: lw_deriv_below(ng,nreg), lw_deriv_tmp(ng,nreg)
-    real(jprb) :: partial_sum
-    integer    :: jlev, jg
-
-    real(jphook) :: hook_handle
-
-    if (lhook) call dr_hook('radiation_lw_derivatives:calc_lw_derivatives_matrix',0,hook_handle)
-
-    ! Initialize the derivatives at the surface; the surface is
-    ! treated as a single clear-sky layer so we only need to put
-    ! values in region 1.
-    lw_derivatives_g_reg = 0.0_jprb
-    lw_derivatives_g_reg(:,1) = flux_up_surf / sum(flux_up_surf)
-    lw_derivatives(icol, nlev+1) = 1.0_jprb
-
-    ! Move up through the atmosphere computing the derivatives at each
-    ! half-level
-    if (nreg == 3) then
-
-      do jlev = nlev,1,-1
-
-        lw_deriv_below = lw_derivatives_g_reg
-        partial_sum = 0.0_jprb
-
-        associate(A => u_matrix(:,:,jlev+1), b => lw_deriv_below, C => lw_deriv_tmp, &
-              &   T => transmittance(:,:,:,jlev), lw_deriv => lw_derivatives_g_reg)
-          !$omp simd reduction(+:partial_sum)
-          do jg = 1, ng
-            ! Compute effect of overlap at half-level jlev+1, yielding
-            ! derivatives just above that half-level
-            C(jg,1) = A(1,1)*b(jg,1) + A(1,2)*b(jg,2) + A(1,3)*b(jg,3)
-            C(jg,2) = A(2,1)*b(jg,1) + A(2,2)*b(jg,2) + A(2,3)*b(jg,3)
-            C(jg,3) = A(3,1)*b(jg,1) + A(3,2)*b(jg,2) + A(3,3)*b(jg,3)
-
-            ! Compute effect of transmittance of layer jlev, yielding
-            ! derivatives just below the half-level above (jlev)
-            lw_deriv(jg,1) = T(jg,1,1)*C(jg,1) + T(jg,1,2)*C(jg,2) + T(jg,1,3)*C(jg,3)
-            lw_deriv(jg,2) = T(jg,2,1)*C(jg,1) + T(jg,2,2)*C(jg,2) + T(jg,2,3)*C(jg,3)
-            lw_deriv(jg,3) = T(jg,3,1)*C(jg,1) + T(jg,3,2)*C(jg,2) + T(jg,3,3)*C(jg,3)
-
-            partial_sum =  partial_sum + lw_deriv(jg,1) + lw_deriv(jg,2) + lw_deriv(jg,3)
-          end do
-
-        end associate
-
-        lw_derivatives(icol, jlev) = partial_sum
-
-      end do
-
-    else
-      do jlev = nlev,1,-1
-        ! Compute effect of overlap at half-level jlev+1, yielding
-        ! derivatives just above that half-level
-        lw_derivatives_g_reg = singlemat_x_vec(ng,ng,nreg,u_matrix(:,:,jlev+1),lw_derivatives_g_reg)
-
-        ! Compute effect of transmittance of layer jlev, yielding
-        ! derivatives just below the half-level above (jlev)
-        lw_derivatives_g_reg = mat_x_vec(ng,ng,nreg,transmittance(:,:,:,jlev),lw_derivatives_g_reg)
-
-        lw_derivatives(icol, jlev) = sum(lw_derivatives_g_reg)
-      end do
-    end if
-    if (lhook) call dr_hook('radiation_lw_derivatives:calc_lw_derivatives_matrix',1,hook_handle)
-
-  end subroutine calc_lw_derivatives_matrix
+  
 
 
   !---------------------------------------------------------------------
   ! Calculation for solvers involving multiple regions but no 3D
   ! effects: the difference from calc_lw_derivatives_matrix is that transmittance
   ! has one fewer dimensions
-  subroutine calc_lw_derivatives_region(ng_lw_in, nlev, nreg_in, icol, transmittance, &
-       &                                u_matrix, flux_up_surf, lw_derivatives)
+  
 
-    use parkind1, only           : jprb
-    use yomhook,  only           : lhook, dr_hook, jphook
 
-    use radiation_matrix
+  subroutine calc_lw_derivatives_ica_GPU(ng_lw_in, nlev, icol, transmittance, flux_up_surf, lw_derivatives)
+use parkind1
+implicit none
 
-    implicit none
+integer,    intent(in) :: ng_lw_in   
+integer,    intent(in) :: nlev 
+integer,    intent(in) :: icol 
+real(jprb), intent(in) :: transmittance(ng_lw_in,nlev)
+real(jprb), intent(in) :: flux_up_surf(ng_lw_in) 
 
-    ! Inputs
-    integer,    intent(in) :: ng_lw_in   ! number of spectral intervals
-    integer,    intent(in) :: nlev ! number of levels
-    integer,    intent(in) :: nreg_in ! number of regions
-    integer,    intent(in) :: icol ! Index of column for output
-    real(jprb), intent(in) :: transmittance(ng,nreg,nlev)
-    real(jprb), intent(in) :: u_matrix(nreg,nreg,nlev+1) ! Upward overlap matrix
-    real(jprb), intent(in) :: flux_up_surf(ng) ! Upwelling surface spectral flux (W m-2)
+real(jprb), intent(out) :: lw_derivatives(:,:) 
 
-    ! Output
-    real(jprb), intent(out) :: lw_derivatives(:,:) ! dimensioned (ncol,nlev+1)
 
-    ! Rate of change of spectral flux at a given height with respect
-    ! to the surface value
-    real(jprb) :: lw_deriv(ng,nreg), lw_deriv_below(ng,nreg)
-    real(jprb) :: partial_sum(ng)
 
-    integer    :: jlev, jg
 
-    real(jphook) :: hook_handle
 
-    if (lhook) call dr_hook('radiation_lw_derivatives:calc_lw_derivatives_region',0,hook_handle)
 
-    ! Initialize the derivatives at the surface; the surface is
-    ! treated as a single clear-sky layer so we only need to put
-    ! values in region 1.
-    lw_deriv = 0.0_jprb
-    lw_deriv(:,1) = flux_up_surf / sum(flux_up_surf)
-    lw_derivatives(icol, nlev+1) = 1.0_jprb
 
-    if (nreg == 3) then
-      ! Optimize the most common case of 3 regions by removing the
-      ! nested call to singlemat_x_vec and unrolling the matrix
-      ! multiplication inline
 
-      do jlev = nlev,1,-1
-        ! Compute effect of overlap at half-level jlev+1, yielding
-        ! derivatives just above that half-level
-        lw_deriv_below = lw_deriv
 
-        associate(A => u_matrix(:,:,jlev+1), b => lw_deriv_below)
-          !$omp simd reduction(+:partial_sum)
-          do jg = 1,ng
-            ! Both inner and outer loop of the matrix loops j1 and j2 unrolled
-            ! inner loop:        j2=1             j2=2             j2=3
-            lw_deriv(jg,1) = A(1,1)*b(jg,1) + A(1,2)*b(jg,2) + A(1,3)*b(jg,3)
-            lw_deriv(jg,2) = A(2,1)*b(jg,1) + A(2,2)*b(jg,2) + A(2,3)*b(jg,3)
-            lw_deriv(jg,3) = A(3,1)*b(jg,1) + A(3,2)*b(jg,2) + A(3,3)*b(jg,3)
 
-            ! Compute effect of transmittance of layer jlev, yielding
-            ! derivatives just below the half-level above (jlev)
-            lw_deriv(jg,1) = lw_deriv(jg,1) * transmittance(jg,1,jlev)
-            lw_deriv(jg,2) = lw_deriv(jg,2) * transmittance(jg,2,jlev)
-            lw_deriv(jg,3) = lw_deriv(jg,3) * transmittance(jg,3,jlev)
 
-            partial_sum(jg) = lw_deriv(jg,1) + lw_deriv(jg,2) + lw_deriv(jg,3)
-          end do
-        end associate
 
-        lw_derivatives(icol, jlev) = sum(partial_sum)
-      end do
-    else
-      ! General case when number of regions is not 3
 
-      ! Move up through the atmosphere computing the derivatives at each
-      ! half-level
-      do jlev = nlev,1,-1
-        ! Compute effect of overlap at half-level jlev+1, yielding
-        ! derivatives just above that half-level
-        lw_deriv = singlemat_x_vec(ng,ng,nreg,u_matrix(:,:,jlev+1),lw_deriv)
 
-        ! Compute effect of transmittance of layer jlev, yielding
-        ! derivatives just below the half-level above (jlev)
-        lw_deriv = transmittance(:,:,jlev) * lw_deriv
 
-        lw_derivatives(icol, jlev) = sum(lw_deriv)
-      end do
-    end if
 
-    if (lhook) call dr_hook('radiation_lw_derivatives:calc_lw_derivatives_region',1,hook_handle)
 
-  end subroutine calc_lw_derivatives_region
+end subroutine calc_lw_derivatives_ica_GPU
 
+  subroutine modify_lw_derivatives_ica_GPU(ng_lw_in, nlev, icol, transmittance, &
+&                               flux_up_surf, weight, lw_derivatives)
+use parkind1
+use yomhook
+implicit none
+
+integer,    intent(in) :: ng_lw_in   
+integer,    intent(in) :: nlev 
+integer,    intent(in) :: icol 
+real(jprb), intent(in) :: transmittance(ng_lw_in,nlev)
+real(jprb), intent(in) :: flux_up_surf(ng_lw_in) 
+real(jprb), intent(in) :: weight 
+
+real(jprb), intent(inout) :: lw_derivatives(:,:) 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+end subroutine modify_lw_derivatives_ica_GPU
+
+  subroutine calc_lw_derivatives_matrix_GPU(ng_lw_in, nlev, nreg_in, icol, transmittance, &
+&                                u_matrix, flux_up_surf, lw_derivatives, lacc)
+use parkind1
+use yomhook
+use radiation_matrix
+implicit none
+
+integer,    intent(in) :: ng_lw_in   
+integer,    intent(in) :: nlev 
+integer,    intent(in) :: nreg_in 
+integer,    intent(in) :: icol 
+real(jprb), intent(in) :: transmittance(ng_lw_in,nreg,nreg,nlev)
+real(jprb), intent(in) :: u_matrix(nreg,nreg,nlev+1) 
+real(jprb), intent(in) :: flux_up_surf(ng_lw_in) 
+
+real(jprb), intent(out) :: lw_derivatives(:,:) 
+
+
+
+
+
+
+
+logical, intent (in) :: lacc
+
+
+
+
+
+
+
+
+
+
+
+end subroutine calc_lw_derivatives_matrix_GPU
+
+  subroutine calc_lw_derivatives_region_GPU(ng_lw_in, nlev, nreg_in, icol, transmittance, &
+&                                u_matrix, flux_up_surf, lw_derivatives, lacc)
+use parkind1
+use yomhook
+use radiation_matrix
+implicit none
+
+integer,    intent(in) :: ng_lw_in   
+integer,    intent(in) :: nlev 
+integer,    intent(in) :: nreg_in 
+integer,    intent(in) :: icol 
+real(jprb), intent(in) :: transmittance(ng_lw_in,nreg,nlev)
+real(jprb), intent(in) :: u_matrix(nreg,nreg,nlev+1) 
+real(jprb), intent(in) :: flux_up_surf(ng_lw_in) 
+
+real(jprb), intent(out) :: lw_derivatives(:,:) 
+
+
+
+
+
+
+logical, intent (in) :: lacc
+
+
+
+
+
+
+
+
+
+end subroutine calc_lw_derivatives_region_GPU
+
+  subroutine calc_lw_derivatives_ica_CPU(ng_lw_in, nlev, icol, transmittance, flux_up_surf, lw_derivatives)
+use parkind1
+use yomhook
+implicit none
+
+integer,    intent(in) :: ng_lw_in   
+integer,    intent(in) :: nlev 
+integer,    intent(in) :: icol 
+real(jprb), intent(in) :: transmittance(ng_lw_in,nlev)
+real(jprb), intent(in) :: flux_up_surf(ng_lw_in) 
+
+real(jprb), intent(out) :: lw_derivatives(:,:) 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+end subroutine calc_lw_derivatives_ica_CPU
+
+  subroutine modify_lw_derivatives_ica_CPU(ng_lw_in, nlev, icol, transmittance, &
+&                               flux_up_surf, weight, lw_derivatives)
+use parkind1
+use yomhook
+implicit none
+
+integer,    intent(in) :: ng_lw_in   
+integer,    intent(in) :: nlev 
+integer,    intent(in) :: icol 
+real(jprb), intent(in) :: transmittance(ng_lw_in,nlev)
+real(jprb), intent(in) :: flux_up_surf(ng_lw_in) 
+real(jprb), intent(in) :: weight 
+
+real(jprb), intent(inout) :: lw_derivatives(:,:) 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+end subroutine modify_lw_derivatives_ica_CPU
+
+  subroutine calc_lw_derivatives_matrix_CPU(ng_lw_in, nlev, nreg_in, icol, transmittance, &
+&                                u_matrix, flux_up_surf, lw_derivatives)
+use parkind1
+use yomhook
+use radiation_matrix
+implicit none
+
+integer,    intent(in) :: ng_lw_in   
+integer,    intent(in) :: nlev 
+integer,    intent(in) :: nreg_in 
+integer,    intent(in) :: icol 
+real(jprb), intent(in) :: transmittance(ng_lw_in,nreg,nreg,nlev)
+real(jprb), intent(in) :: u_matrix(nreg,nreg,nlev+1) 
+real(jprb), intent(in) :: flux_up_surf(ng_lw_in) 
+
+real(jprb), intent(out) :: lw_derivatives(:,:) 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+end subroutine calc_lw_derivatives_matrix_CPU
+
+  subroutine calc_lw_derivatives_region_CPU(ng_lw_in, nlev, nreg_in, icol, transmittance, &
+&                                u_matrix, flux_up_surf, lw_derivatives)
+use parkind1
+use yomhook
+use radiation_matrix
+implicit none
+
+integer,    intent(in) :: ng_lw_in   
+integer,    intent(in) :: nlev 
+integer,    intent(in) :: nreg_in 
+integer,    intent(in) :: icol 
+real(jprb), intent(in) :: transmittance(ng_lw_in,nreg,nlev)
+real(jprb), intent(in) :: u_matrix(nreg,nreg,nlev+1) 
+real(jprb), intent(in) :: flux_up_surf(ng_lw_in) 
+
+real(jprb), intent(out) :: lw_derivatives(:,:) 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+end subroutine calc_lw_derivatives_region_CPU
 
 end module radiation_lw_derivatives
+

@@ -115,6 +115,19 @@ REAL(KIND=JPRB) :: REPSP1
 ! RDISP    : for diffusion of surface pressure.
 
 ! RDHI     : main horizontal diffusion operator used for stretched ARPEGE.
+!
+! RDHIVOR  : main horizontal diffusion operator, VOR  
+! RDHIDIV  : main horizontal diffusion operator, DIV
+! RDHISPD  : main horizontal diffusion operator, SPD
+! RDHISVD  : main horizontal diffusion operator, SVD
+! RDHINHX  : main horizontal diffusion operator, NHX
+! RDHIT    : main horizontal diffusion operator, T
+! RDHIGFL  : main horizontal diffusion operator, GFL
+! RDHIP    : main horizontal diffusion operator, P
+! RDHSVOR  : supplementary horizontal diffusion operator, VOR
+! RDHSDIV  : supplementary horizontal diffusion operator, DIV
+! RDHSSVD  : supplementary horizontal diffusion operator, SVD
+! RDHSNHX  : supplementary horizontal diffusion operator, NHX
 
 ! LSTRHD   : .T.: main horizontal diffusion operator adapted to stretched ARP.
 ! HDTIME_STRHD: TDT (if not, the main horizontal diffusion operator
@@ -179,6 +192,18 @@ REAL(KIND=JPRB),ALLOCATABLE:: RDIPD(:,:)
 REAL(KIND=JPRB),ALLOCATABLE:: RDIVD(:,:)
 REAL(KIND=JPRB),ALLOCATABLE:: RDISP(:)
 REAL(KIND=JPRB),ALLOCATABLE:: RDHI(:,:,:)
+REAL(KIND=JPRB),ALLOCATABLE:: RDHIVOR(:,:,:)
+REAL(KIND=JPRB),ALLOCATABLE:: RDHIDIV(:,:,:)
+REAL(KIND=JPRB),ALLOCATABLE:: RDHISPD(:,:,:)
+REAL(KIND=JPRB),ALLOCATABLE:: RDHISVD(:,:,:)
+REAL(KIND=JPRB),ALLOCATABLE:: RDHINHX(:,:,:)
+REAL(KIND=JPRB),ALLOCATABLE:: RDHIT(:,:,:)
+REAL(KIND=JPRB),ALLOCATABLE:: RDHIGFL(:,:,:,:)
+REAL(KIND=JPRB),ALLOCATABLE:: RDHIP(:,:,:)
+REAL(KIND=JPRB),ALLOCATABLE:: RDHSVOR(:,:,:)
+REAL(KIND=JPRB),ALLOCATABLE:: RDHSDIV(:,:,:)
+REAL(KIND=JPRB),ALLOCATABLE:: RDHSSVD(:,:,:)
+REAL(KIND=JPRB),ALLOCATABLE:: RDHSNHX(:,:,:)
 LOGICAL :: LSTRHD
 REAL(KIND=JPRB) :: HDTIME_STRHD
 REAL(KIND=JPRB) :: KLSPONGE
@@ -425,11 +450,18 @@ REAL(KIND=JPRB),ALLOCATABLE :: RGWFRIC(:)
 ! SIB(NFLEVG,NFLEVG)   : operator "B" of the SI scheme (DIV ===> DP/DT=B.DIV).
 ! SIMO(NFLEVG,NFLEVG)  : eigenvectors of "B".
 ! SIMI(NFLEVG,NFLEVG)  : SIMO**-1
+
+! SIMITRA, SIMOTRA, SIFACI : transposed SIMI, SIMO and SIFACI
+
 ! SIVP(NFLEVG)         : eigenvalues of "B".
 ! SIHEG(NFLEVG,(NSMAX+1)*(NSMAX+2)/2,3), SIHEG2(NFLEVG,NSMAX+1,2:3):
 !  Helmholtz operator in case of SI computations with not reduced divergence. 
 ! SIHEGB(NFLEVG,(NSMAX+1)*(NSMAX+2)/2,3), SIHEGB2(NFLEVG,NSMAX+1,2:3):
 !  Additional operators in case of LSIDG=T SI computations in the NH model.
+
+! SIHEGTRA, SIHEG2TRA, SIHEGBTRA, SIHEGB2TRA : transposed arrays as defined
+! above. SIHEGIND : indices in SIHEGTRA and SIHEGBTRA.
+!
 
 ! * PRESSURES LINKED TO A REFERENCE ACOUSTIC SURFACE PRESSURE = SIPRA
 ! SIALPH_NH(NFLEVG)  : coefficients "alpha" of nonhydrostatics.
@@ -520,6 +552,15 @@ REAL(KIND=JPRB),ALLOCATABLE:: SIHEGB2(:,:,:)
 REAL(KIND=JPRB),ALLOCATABLE:: SIFAC(:,:)
 REAL(KIND=JPRB),ALLOCATABLE:: SIFACI(:,:)
 REAL(KIND=JPRB),ALLOCATABLE:: SITRAM(:)
+
+REAL(KIND=JPRB),ALLOCATABLE:: SIMITRA(:,:)
+REAL(KIND=JPRB),ALLOCATABLE:: SIMOTRA(:,:)
+REAL(KIND=JPRB),ALLOCATABLE:: SIFACITRA(:,:)
+REAL(KIND=JPRB),ALLOCATABLE:: SIHEGTRA(:,:)
+REAL(KIND=JPRB),ALLOCATABLE:: SIHEG2TRA(:,:,:)
+REAL(KIND=JPRB),ALLOCATABLE:: SIHEGBTRA(:,:)
+REAL(KIND=JPRB),ALLOCATABLE:: SIHEGB2TRA(:,:,:)
+REAL(KIND=JPRB),ALLOCATABLE:: SIHEGIND(:)
 
 REAL(KIND=JPRB),ALLOCATABLE:: SIZA(:)
 REAL(KIND=JPRB),ALLOCATABLE:: SIZC(:)

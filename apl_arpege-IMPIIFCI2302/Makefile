@@ -2,7 +2,7 @@ include Makefile.inc
 
 all: apl_arpege.o
 
-./apl_arpege.intfb.ok: $(SRC)/./apl_arpege.intfb.h geometry_mod.o mf_phys_type_mod.o cpg_type_mod.o cpg_sl2_type_mod.o cpg_opts_type_mod.o mf_phys_surface_type_mod.o field_variables_mod.o mf_phys_base_state_type_mod.o mf_phys_next_state_type_mod.o type_model.o parkind1.o yomhook.o ddh_mix.o yoe_phys_mwave.o
+./apl_arpege.intfb.ok: $(SRC)/./apl_arpege.intfb.h geometry_mod.o mf_phys_type_mod.o cpg_type_mod.o cpg_sl2_type_mod.o cpg_opts_type_mod.o mf_phys_surface_type_mod.o field_variables_mod.o mf_phys_base_state_type_mod.o mf_phys_next_state_type_mod.o type_model.o parkind1.o yomhook.o ddh_mix.o yoe_phys_mwave.o yomcfu.o
 	touch ./apl_arpege.intfb.ok
 
 ecrad_config.ok: $(SRC)/ecrad_config.h
@@ -38,7 +38,7 @@ radiation_optical_depth_scaling.ok: $(SRC)/radiation_optical_depth_scaling.h
 algorithm_state_mod.o: $(SRC)/algorithm_state_mod.F90 parkind1.o
 	$(FC) -c $(SRC)/algorithm_state_mod.F90
 
-apl_arpege.o: $(SRC)/apl_arpege.F90 geometry_mod.o mf_phys_type_mod.o cpg_type_mod.o cpg_sl2_type_mod.o cpg_opts_type_mod.o mf_phys_surface_type_mod.o field_variables_mod.o mf_phys_base_state_type_mod.o mf_phys_next_state_type_mod.o type_model.o parkind1.o yomhook.o ddh_mix.o yoe_phys_mwave.o accldia.intfb.ok acclph.intfb.ok acdnshf.intfb.ok acdrag.intfb.ok acdrme.intfb.ok acevadcape.intfb.ok achmt.intfb.ok achmtls.intfb.ok acpluis.intfb.ok acsol.intfb.ok actqsat.intfb.ok acvisih.intfb.ok aplpar_init.intfb.ok checkmv.intfb.ok cpphinp.intfb.ok cpqsol.intfb.ok mf_phys_bayrad.intfb.ok mf_phys_corwat.intfb.ok mf_phys_cvv.intfb.ok mf_phys_fpl_part1.intfb.ok mf_phys_fpl_part2.intfb.ok mf_phys_mocon.intfb.ok mf_phys_precips.intfb.ok mf_phys_save_phsurf_part1.intfb.ok mf_phys_save_phsurf_part2.intfb.ok mf_phys_transfer.intfb.ok ppwetpoint.intfb.ok qngcor.intfb.ok aplpar_flexdia.intfb.ok apl_arpege_oceanic_fluxes.intfb.ok apl_wind_gust.intfb.ok apl_arpege_shallow_convection_and_turbulence.intfb.ok apl_arpege_albedo_computation.intfb.ok apl_arpege_aerosols_for_radiation.intfb.ok apl_arpege_cloudiness.intfb.ok apl_arpege_radiation.intfb.ok apl_arpege_soil_hydro.intfb.ok apl_arpege_surface.intfb.ok apl_arpege_deep_convection.intfb.ok apl_arpege_turbulence_part2.intfb.ok apl_arpege_precipitation.intfb.ok apl_arpege_hydro_budget.intfb.ok apl_arpege_surface_update.intfb.ok apl_arpege_atmosphere_update.intfb.ok apl_arpege_init.intfb.ok apl_arpege_init_surfex.intfb.ok apl_arpege_dprecips.intfb.ok apl_arpege_mwave.intfb.ok
+apl_arpege.o: $(SRC)/apl_arpege.F90 geometry_mod.o mf_phys_type_mod.o cpg_type_mod.o cpg_sl2_type_mod.o cpg_opts_type_mod.o mf_phys_surface_type_mod.o field_variables_mod.o mf_phys_base_state_type_mod.o mf_phys_next_state_type_mod.o type_model.o parkind1.o yomhook.o ddh_mix.o yoe_phys_mwave.o yomcfu.o apl_arpege_part0.intfb.ok accldia.intfb.ok acclph.intfb.ok acdnshf.intfb.ok acdrag.intfb.ok acdrme.intfb.ok acevadcape.intfb.ok achmt.intfb.ok achmtls.intfb.ok acpluis.intfb.ok acsol.intfb.ok actqsat.intfb.ok acvisih.intfb.ok cpqsol.intfb.ok mf_phys_bayrad.intfb.ok mf_phys_corwat.intfb.ok mf_phys_cvv.intfb.ok mf_phys_fpl_part2.intfb.ok mf_phys_mocon.intfb.ok mf_phys_precips.intfb.ok mf_phys_save_phsurf_part2.intfb.ok mf_phys_transfer.intfb.ok ppwetpoint.intfb.ok qngcor.intfb.ok aplpar_flexdia.intfb.ok apl_arpege_oceanic_fluxes.intfb.ok apl_wind_gust.intfb.ok apl_arpege_shallow_convection_and_turbulence.intfb.ok apl_arpege_albedo_computation.intfb.ok apl_arpege_aerosols_for_radiation.intfb.ok apl_arpege_cloudiness.intfb.ok apl_arpege_radiation.intfb.ok apl_arpege_soil_hydro.intfb.ok apl_arpege_surface.intfb.ok apl_arpege_deep_convection.intfb.ok apl_arpege_turbulence_part2.intfb.ok apl_arpege_precipitation.intfb.ok apl_arpege_hydro_budget.intfb.ok apl_arpege_surface_update.intfb.ok apl_arpege_atmosphere_update.intfb.ok apl_arpege_init.intfb.ok apl_arpege_init_surfex.intfb.ok apl_arpege_dprecips.intfb.ok apl_arpege_mwave.intfb.ok
 	$(FC) -c $(SRC)/apl_arpege.F90
 
 compensated_summation_mod.o: $(SRC)/compensated_summation_mod.F90 parkind1.o yomhook.o
@@ -899,7 +899,7 @@ mf_phys_base_state_type_mod.o: $(SRC)/mf_phys_base_state_type_mod.F90 parkind1.o
 mf_phys_next_state_type_mod.o: $(SRC)/mf_phys_next_state_type_mod.F90 parkind1.o field_module.o cpg_opts_type_mod.o geometry_mod.o field_variables_mod.o cpg_sl1_type_mod.o type_model.o variable_module.o
 	$(FC) -c $(SRC)/mf_phys_next_state_type_mod.F90
 
-mf_phys_surface_type_mod.o: $(SRC)/mf_phys_surface_type_mod.F90 parkind1.o surface_variables_mod.o surface_views_module.o yomdyn.o
+mf_phys_surface_type_mod.o: $(SRC)/mf_phys_surface_type_mod.F90 parkind1.o surface_variables_mod.o surface_views_module.o yomdyn.o cpg_opts_type_mod.o
 	$(FC) -c $(SRC)/mf_phys_surface_type_mod.F90
 
 mf_phys_type_mod.o: $(SRC)/mf_phys_type_mod.F90 parkind1.o field_module.o field_registry_mod.o cpg_opts_type_mod.o
@@ -1136,10 +1136,10 @@ radiation_adding_ica_sw.o: $(SRC)/radiation_adding_ica_sw.F90 parkind1.o yomhook
 radiation_aerosol.o: $(SRC)/radiation_aerosol.F90 parkind1.o radiation_io.o yomhook.o radiation_config.o radiation_check.o
 	$(FC) -c $(SRC)/radiation_aerosol.F90
 
-radiation_aerosol_optics.o: $(SRC)/radiation_aerosol_optics.F90 parkind1.o yomhook.o radiation_config.o radiation_aerosol_optics_data.o radiation_io.o easy_netcdf_read_mpi.o easy_netcdf.o radiation_spectral_definition.o radiation_thermodynamics.o radiation_gas.o radiation_aerosol.o radiation_constants.o ecrad_config.ok radiation_delta_eddington.ok
+radiation_aerosol_optics.o: $(SRC)/radiation_aerosol_optics.F90 parkind1.o yomhook.o radiation_config.o radiation_aerosol_optics_data.o radiation_io.o easy_netcdf.o radiation_spectral_definition.o radiation_thermodynamics.o radiation_gas.o radiation_aerosol.o radiation_constants.o ecrad_config.ok radiation_delta_eddington.ok
 	$(FC) -c $(SRC)/radiation_aerosol_optics.F90
 
-radiation_aerosol_optics_data.o: $(SRC)/radiation_aerosol_optics_data.F90 parkind1.o radiation_io.o yomhook.o easy_netcdf_read_mpi.o easy_netcdf.o ecrad_config.ok
+radiation_aerosol_optics_data.o: $(SRC)/radiation_aerosol_optics_data.F90 parkind1.o radiation_io.o yomhook.o easy_netcdf.o ecrad_config.ok
 	$(FC) -c $(SRC)/radiation_aerosol_optics_data.F90
 
 radiation_check.o: $(SRC)/radiation_check.F90 parkind1.o radiation_io.o
@@ -1160,7 +1160,7 @@ radiation_cloud_generator_acc.o: $(SRC)/radiation_cloud_generator_acc.F90 parkin
 radiation_cloud_optics.o: $(SRC)/radiation_cloud_optics.F90 parkind1.o yomhook.o radiation_io.o radiation_config.o radiation_ice_optics_fu.o radiation_ice_optics_baran.o radiation_ice_optics_baran2017.o radiation_ice_optics_yi.o radiation_liquid_optics_socrates.o radiation_liquid_optics_slingo.o radiation_thermodynamics.o radiation_cloud.o radiation_constants.o radiation_delta_eddington.ok
 	$(FC) -c $(SRC)/radiation_cloud_optics.F90
 
-radiation_cloud_optics_data.o: $(SRC)/radiation_cloud_optics_data.F90 parkind1.o yomhook.o easy_netcdf_read_mpi.o easy_netcdf.o ecrad_config.ok
+radiation_cloud_optics_data.o: $(SRC)/radiation_cloud_optics_data.F90 parkind1.o yomhook.o easy_netcdf.o ecrad_config.ok
 	$(FC) -c $(SRC)/radiation_cloud_optics_data.F90
 
 radiation_cloudless_lw.o: $(SRC)/radiation_cloudless_lw.F90 parkind1.o yomhook.o radiation_config.o radiation_flux.o radiation_two_stream.o radiation_adding_ica_lw.o radiation_lw_derivatives.o
@@ -1175,10 +1175,10 @@ radiation_config.o: $(SRC)/radiation_config.F90 parkind1.o radiation_cloud_optic
 radiation_constants.o: $(SRC)/radiation_constants.F90 parkind1.o
 	$(FC) -c $(SRC)/radiation_constants.F90
 
-radiation_ecckd.o: $(SRC)/radiation_ecckd.F90 parkind1.o radiation_gas_constants.o radiation_ecckd_gas.o radiation_spectral_definition.o easy_netcdf_read_mpi.o easy_netcdf.o yomhook.o radiation_io.o radiation_constants.o ecrad_config.ok
+radiation_ecckd.o: $(SRC)/radiation_ecckd.F90 parkind1.o radiation_gas_constants.o radiation_ecckd_gas.o radiation_spectral_definition.o easy_netcdf.o yomhook.o radiation_io.o radiation_constants.o ecrad_config.ok
 	$(FC) -c $(SRC)/radiation_ecckd.F90
 
-radiation_ecckd_gas.o: $(SRC)/radiation_ecckd_gas.F90 parkind1.o radiation_gas_constants.o easy_netcdf_read_mpi.o easy_netcdf.o ecrad_config.ok
+radiation_ecckd_gas.o: $(SRC)/radiation_ecckd_gas.F90 parkind1.o radiation_gas_constants.o easy_netcdf.o ecrad_config.ok
 	$(FC) -c $(SRC)/radiation_ecckd_gas.F90
 
 radiation_ecckd_interface.o: $(SRC)/radiation_ecckd_interface.F90 parkind1.o radiation_config.o yomhook.o radiation_gas.o radiation_thermodynamics.o radiation_single_level.o radiation_gas_constants.o
@@ -1196,7 +1196,7 @@ radiation_gas_constants.o: $(SRC)/radiation_gas_constants.F90 parkind1.o
 radiation_general_cloud_optics.o: $(SRC)/radiation_general_cloud_optics.F90 parkind1.o yomhook.o radiation_io.o radiation_config.o radiation_spectral_definition.o radiation_thermodynamics.o radiation_cloud.o radiation_constants.o easy_netcdf.o radiation_delta_eddington.ok
 	$(FC) -c $(SRC)/radiation_general_cloud_optics.F90
 
-radiation_general_cloud_optics_data.o: $(SRC)/radiation_general_cloud_optics_data.F90 parkind1.o yomhook.o easy_netcdf_read_mpi.o easy_netcdf.o radiation_spectral_definition.o radiation_io.o radiation_constants.o ecrad_config.ok radiation_delta_eddington.ok
+radiation_general_cloud_optics_data.o: $(SRC)/radiation_general_cloud_optics_data.F90 parkind1.o yomhook.o easy_netcdf.o radiation_spectral_definition.o radiation_io.o radiation_constants.o ecrad_config.ok radiation_delta_eddington.ok
 	$(FC) -c $(SRC)/radiation_general_cloud_optics_data.F90
 
 radiation_homogeneous_lw.o: $(SRC)/radiation_homogeneous_lw.F90 parkind1.o yomhook.o radiation_config.o radiation_cloud.o radiation_flux.o radiation_two_stream.o radiation_adding_ica_lw.o radiation_lw_derivatives.o
@@ -1223,10 +1223,16 @@ radiation_ifs_rrtm.o: $(SRC)/radiation_ifs_rrtm.F90 yoerrtm.o yoesrtm.o yoerrtft
 radiation_ifs_rrtmgp.o: $(SRC)/radiation_ifs_rrtmgp.F90 parkind1.o yomhook.o radiation_io.o radiation_config.o radiation_spectral_definition.o mo_load_coefficients.o mo_gas_concentrations.o mo_gas_optics_rrtmgp.o radiation_gas.o radiation_thermodynamics.o radiation_single_level.o radiation_gas_constants.o mo_rte_util_array.o
 	$(FC) -c $(SRC)/radiation_ifs_rrtmgp.F90
 
-radiation_interface.o: $(SRC)/radiation_interface.F90 parkind1.o yomhook.o radiation_io.o radiation_config.o radiation_spectral_definition.o radiation_monochromatic.o radiation_ifs_rrtm.o radiation_ecckd_interface.o radiation_ifs_rrtmgp.o radiation_cloud_optics.o radiation_general_cloud_optics.o radiation_aerosol_optics.o yoerdi.o radiation_gas.o radiation_single_level.o radiation_thermodynamics.o radiation_cloud.o radiation_aerosol.o radiation_flux.o radiation_spartacus_sw.o radiation_spartacus_lw.o radiation_tripleclouds_sw.o radiation_tripleclouds_lw.o radiation_mcica_sw.o radiation_mcica_lw.o radiation_mcica_acc_sw.o radiation_mcica_acc_lw.o radiation_cloudless_sw.o radiation_cloudless_lw.o radiation_homogeneous_sw.o radiation_homogeneous_lw.o radiation_save.o
+radiation_interface.o: $(SRC)/radiation_interface.F90 radiation_interface_gpu.o radiation_interface_cpu.o
 	$(FC) -c $(SRC)/radiation_interface.F90
 
-radiation_io.o: $(SRC)/radiation_io.F90 yomlun_ifsaux.o abor1.intfb.ok
+radiation_interface_cpu.o: $(SRC)/radiation_interface_cpu.F90 parkind1.o yomhook.o radiation_io.o radiation_config.o radiation_spectral_definition.o radiation_monochromatic.o radiation_ifs_rrtm.o radiation_ecckd_interface.o radiation_ifs_rrtmgp.o radiation_cloud_optics.o radiation_general_cloud_optics.o radiation_aerosol_optics.o yoerdi.o radiation_gas.o radiation_single_level.o radiation_thermodynamics.o radiation_cloud.o radiation_aerosol.o radiation_flux.o radiation_spartacus_sw.o radiation_spartacus_lw.o radiation_tripleclouds_sw.o radiation_tripleclouds_lw.o radiation_mcica_sw.o radiation_mcica_lw.o radiation_mcica_acc_sw.o radiation_mcica_acc_lw.o radiation_cloudless_sw.o radiation_cloudless_lw.o radiation_homogeneous_sw.o radiation_homogeneous_lw.o radiation_save.o
+	$(FC) -c $(SRC)/radiation_interface_cpu.F90
+
+radiation_interface_gpu.o: $(SRC)/radiation_interface_gpu.F90 parkind1.o yomhook.o radiation_io.o radiation_config.o radiation_spectral_definition.o radiation_monochromatic.o radiation_ifs_rrtm.o radiation_ecckd_interface.o radiation_ifs_rrtmgp.o radiation_cloud_optics.o radiation_general_cloud_optics.o radiation_aerosol_optics.o yoerdi.o radiation_gas.o radiation_single_level.o radiation_thermodynamics.o radiation_cloud.o radiation_aerosol.o radiation_flux.o radiation_spartacus_sw.o radiation_spartacus_lw.o radiation_tripleclouds_sw.o radiation_tripleclouds_lw.o radiation_mcica_sw.o radiation_mcica_lw.o radiation_mcica_acc_sw.o radiation_mcica_acc_lw.o radiation_cloudless_sw.o radiation_cloudless_lw.o radiation_homogeneous_sw.o radiation_homogeneous_lw.o radiation_save.o
+	$(FC) -c $(SRC)/radiation_interface_gpu.F90
+
+radiation_io.o: $(SRC)/radiation_io.F90 yomlun_ifsaux.o
 	$(FC) -c $(SRC)/radiation_io.F90
 
 radiation_liquid_optics_slingo.o: $(SRC)/radiation_liquid_optics_slingo.F90 parkind1.o yomhook.o
@@ -1271,7 +1277,7 @@ radiation_regions.o: $(SRC)/radiation_regions.F90 parkind1.o yomhook.o radiation
 radiation_save.o: $(SRC)/radiation_save.F90 parkind1.o yomhook.o easy_netcdf.o radiation_io.o radiation_config.o radiation_thermodynamics.o radiation_flux.o radiation_single_level.o radiation_cloud.o radiation_gas.o radiation_aerosol.o radiation_matrix.o
 	$(FC) -c $(SRC)/radiation_save.F90
 
-radiation_setup.o: $(SRC)/radiation_setup.F90 parkind1.o radiation_config.o yoeaerop.o yoe_spectral_planck.o yomhook.o yomlun.o yoerad.o yoephy.o yoeaeratm.o yomcompo.o yoerdi.o radiation_interface.o radiation_aerosol_optics.o radiation_aerosol_optics_data.o abor1.intfb.ok
+radiation_setup.o: $(SRC)/radiation_setup.F90 parkind1.o radiation_config.o yoeaerop.o yoe_spectral_planck.o yomhook.o yomlun.o yoerad.o yoephy.o yoeaeratm.o yomcompo.o yoerdi.o radiation_interface.o radiation_aerosol_optics.o radiation_aerosol_optics_data.o
 	$(FC) -c $(SRC)/radiation_setup.F90
 
 radiation_single_level.o: $(SRC)/radiation_single_level.F90 parkind1.o yomhook.o radiation_config.o radiation_io.o radiation_check.o
@@ -1283,7 +1289,7 @@ radiation_spartacus_lw.o: $(SRC)/radiation_spartacus_lw.F90 parkind1.o yomhook.o
 radiation_spartacus_sw.o: $(SRC)/radiation_spartacus_sw.F90 parkind1.o yomhook.o radiation_io.o radiation_config.o radiation_single_level.o radiation_thermodynamics.o radiation_cloud.o radiation_regions.o radiation_overlap.o radiation_flux.o radiation_matrix.o radiation_two_stream.o radiation_constants.o radiation_optical_depth_scaling.ok
 	$(FC) -c $(SRC)/radiation_spartacus_sw.F90
 
-radiation_spectral_definition.o: $(SRC)/radiation_spectral_definition.F90 parkind1.o easy_netcdf_read_mpi.o easy_netcdf.o yomhook.o radiation_io.o radiation_constants.o ecrad_config.ok
+radiation_spectral_definition.o: $(SRC)/radiation_spectral_definition.F90 parkind1.o easy_netcdf.o yomhook.o radiation_io.o radiation_constants.o ecrad_config.ok
 	$(FC) -c $(SRC)/radiation_spectral_definition.F90
 
 radiation_thermodynamics.o: $(SRC)/radiation_thermodynamics.F90 parkind1.o yomhook.o radiation_constants.o radiation_check.o
@@ -1295,7 +1301,7 @@ radiation_tripleclouds_lw.o: $(SRC)/radiation_tripleclouds_lw.F90 parkind1.o yom
 radiation_tripleclouds_sw.o: $(SRC)/radiation_tripleclouds_sw.F90 parkind1.o yomhook.o radiation_config.o radiation_single_level.o radiation_cloud.o radiation_regions.o radiation_overlap.o radiation_flux.o radiation_matrix.o radiation_two_stream.o radiation_delta_eddington.ok radiation_optical_depth_scaling.ok
 	$(FC) -c $(SRC)/radiation_tripleclouds_sw.F90
 
-radiation_two_stream.o: $(SRC)/radiation_two_stream.F90 parkind1.o yomhook.o ecrad_config.ok
+radiation_two_stream.o: $(SRC)/radiation_two_stream.F90 parkind1.o ecrad_config.ok
 	$(FC) -c $(SRC)/radiation_two_stream.F90
 
 random_numbers_mix.o: $(SRC)/random_numbers_mix.F90 parkind1.o yomhook.o
@@ -1352,7 +1358,7 @@ surface_views_diagnostic_module.o: $(SRC)/surface_views_diagnostic_module.F90 pa
 surface_views_module.o: $(SRC)/surface_views_module.F90 surface_views_diagnostic_module.o surface_views_prognostic_module.o
 	$(FC) -c $(SRC)/surface_views_module.F90
 
-surface_views_prognostic_module.o: $(SRC)/surface_views_prognostic_module.F90 parkind1.o field_module.o surface_variables_mod.o yomdyn.o field_access_module.o
+surface_views_prognostic_module.o: $(SRC)/surface_views_prognostic_module.F90 parkind1.o field_module.o surface_variables_mod.o yomdyn.o cpg_opts_type_mod.o field_access_module.o
 	$(FC) -c $(SRC)/surface_views_prognostic_module.F90
 
 type_ecv.o: $(SRC)/type_ecv.F90 parkind1.o yomhook.o
@@ -1939,7 +1945,7 @@ subclean:
 	\rm -f apl_arpege.o
 
 clean: 
-	\rm -f *.o *.xml *.a *.x *.mod *.optrpt *.lst
+	\rm -f *.o *.xml *.a *.x *.mod *.optrpt 
 
 tidy:
 	\rm -f *.xml *.optrpt

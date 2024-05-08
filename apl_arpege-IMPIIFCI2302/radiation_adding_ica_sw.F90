@@ -17,149 +17,157 @@
 
 module radiation_adding_ica_sw
 
-  public
+  
 
 contains
 
-  subroutine adding_ica_sw(ncol, nlev, incoming_toa, &
-       &  albedo_surf_diffuse, albedo_surf_direct, cos_sza, &
-       &  reflectance, transmittance, ref_dir, trans_dir_diff, trans_dir_dir, &
-       &  flux_up, flux_dn_diffuse, flux_dn_direct, &
-       &  albedo, source, inv_denominator)
+  
 
-    use parkind1, only           : jprb
-    use yomhook,  only           : lhook, dr_hook, jphook
+  subroutine adding_ica_sw_GPU(ncol, nlev, incoming_toa, &
+&  albedo_surf_diffuse, albedo_surf_direct, cos_sza, &
+&  reflectance, transmittance, ref_dir, trans_dir_diff, trans_dir_dir, &
+&  flux_up, flux_dn_diffuse, flux_dn_direct, &
+&  albedo, source, inv_denominator)
+use parkind1
+use yomhook
+implicit none
 
-    implicit none
+integer, intent(in) :: ncol 
+integer, intent(in) :: nlev 
 
-    ! Inputs
-    integer, intent(in) :: ncol ! number of columns (may be spectral intervals)
-    integer, intent(in) :: nlev ! number of levels
+real(jprb), intent(in),  dimension(ncol)         :: incoming_toa
 
-    ! Incoming downwelling solar radiation at top-of-atmosphere (W m-2)
-    real(jprb), intent(in),  dimension(ncol)         :: incoming_toa
+real(jprb), intent(in),  dimension(ncol)         :: albedo_surf_diffuse, &
+&                                              albedo_surf_direct
 
-    ! Surface albedo to diffuse and direct radiation
-    real(jprb), intent(in),  dimension(ncol)         :: albedo_surf_diffuse, &
-         &                                              albedo_surf_direct
+real(jprb), intent(in)                           :: cos_sza
 
-    ! Cosine of the solar zenith angle
-    real(jprb), intent(in)                           :: cos_sza
+real(jprb), intent(in),  dimension(ncol, nlev)   :: reflectance, transmittance
 
-    ! Diffuse reflectance and transmittance of each layer
-    real(jprb), intent(in),  dimension(ncol, nlev)   :: reflectance, transmittance
 
-    ! Fraction of direct-beam solar radiation entering the top of a
-    ! layer that is reflected back up or scattered forward into the
-    ! diffuse stream at the base of the layer
-    real(jprb), intent(in),  dimension(ncol, nlev)   :: ref_dir, trans_dir_diff
 
-    ! Direct transmittance, i.e. fraction of direct beam that
-    ! penetrates a layer without being scattered or absorbed
-    real(jprb), intent(in),  dimension(ncol, nlev)   :: trans_dir_dir
+real(jprb), intent(in),  dimension(ncol, nlev)   :: ref_dir, trans_dir_diff
 
-    ! Resulting fluxes (W m-2) at half-levels: diffuse upwelling,
-    ! diffuse downwelling and direct downwelling
-    real(jprb), intent(out), dimension(ncol, nlev+1) :: flux_up, flux_dn_diffuse, &
-         &                                              flux_dn_direct
 
-    ! Albedo of the entire earth/atmosphere system below each half
-    ! level
-    real(jprb), intent(inout), dimension(ncol, nlev+1) :: albedo
+real(jprb), intent(in),  dimension(ncol, nlev)   :: trans_dir_dir
 
-    ! Upwelling radiation at each half-level due to scattering of the
-    ! direct beam below that half-level (W m-2)
-    real(jprb), intent(inout), dimension(ncol, nlev+1) :: source
 
-    ! Equal to 1/(1-albedo*reflectance)
-    real(jprb), intent(inout), dimension(ncol, nlev)   :: inv_denominator
+real(jprb), intent(out), dimension(ncol, nlev+1) :: flux_up, flux_dn_diffuse, &
+&                                              flux_dn_direct
 
-    ! Loop index for model level and column
-    integer :: jlev, jcol
 
-    real(jphook) :: hook_handle
+real(jprb), intent(inout), dimension(ncol, nlev+1) :: albedo
 
-#ifndef _OPENACC
-    if (lhook) call dr_hook('radiation_adding_ica_sw:adding_ica_sw',0,hook_handle)
-#endif
 
-    !$ACC ROUTINE WORKER
+real(jprb), intent(inout), dimension(ncol, nlev+1) :: source
 
-    ! Compute profile of direct (unscattered) solar fluxes at each
-    ! half-level by working down through the atmosphere
-    flux_dn_direct(:,1) = incoming_toa
-    !$ACC LOOP SEQ
-    do jlev = 1,nlev
-      flux_dn_direct(:,jlev+1) = flux_dn_direct(:,jlev)*trans_dir_dir(:,jlev)
-    end do
+real(jprb), intent(inout), dimension(ncol, nlev)   :: inv_denominator
 
-    albedo(:,nlev+1) = albedo_surf_diffuse
 
-    ! At the surface, the direct solar beam is reflected back into the
-    ! diffuse stream
-    source(:,nlev+1) = albedo_surf_direct * flux_dn_direct(:,nlev+1) * cos_sza
 
-    ! Work back up through the atmosphere and compute the albedo of
-    ! the entire earth/atmosphere system below that half-level, and
-    ! also the "source", which is the upwelling flux due to direct
-    ! radiation that is scattered below that level
-    !$ACC LOOP SEQ
-! Added for DWD (2020)
-!NEC$ outerloop_unroll(8)
-    do jlev = nlev,1,-1
-      ! Next loop over columns. We could do this by indexing the
-      ! entire inner dimension as follows, e.g. for the first line:
-      !   inv_denominator(:,jlev) = 1.0_jprb / (1.0_jprb-albedo(:,jlev+1)*reflectance(:,jlev))
-      ! and similarly for subsequent lines, but this slows down the
-      ! routine by a factor of 2!  Rather, we do it with an explicit
-      ! loop.
-      !$ACC LOOP WORKER VECTOR
-      do jcol = 1,ncol
-        ! Lacis and Hansen (1974) Eq 33, Shonk & Hogan (2008) Eq 10:
-        inv_denominator(jcol,jlev) = 1.0_jprb / (1.0_jprb-albedo(jcol,jlev+1)*reflectance(jcol,jlev))
-        ! Shonk & Hogan (2008) Eq 9, Petty (2006) Eq 13.81:
-        albedo(jcol,jlev) = reflectance(jcol,jlev) + transmittance(jcol,jlev) * transmittance(jcol,jlev) &
-             &                                     * albedo(jcol,jlev+1) * inv_denominator(jcol,jlev)
-        ! Shonk & Hogan (2008) Eq 11:
-        source(jcol,jlev) = ref_dir(jcol,jlev)*flux_dn_direct(jcol,jlev) &
-             &  + transmittance(jcol,jlev)*(source(jcol,jlev+1) &
-             &        + albedo(jcol,jlev+1)*trans_dir_diff(jcol,jlev)*flux_dn_direct(jcol,jlev)) &
-             &  * inv_denominator(jcol,jlev)
-      end do
-    end do
 
-    ! At top-of-atmosphere there is no diffuse downwelling radiation
-    flux_dn_diffuse(:,1) = 0.0_jprb
 
-    ! At top-of-atmosphere, all upwelling radiation is due to
-    ! scattering by the direct beam below that level
-    flux_up(:,1) = source(:,1)
 
-    ! Work back down through the atmosphere computing the fluxes at
-    ! each half-level
-    !$ACC LOOP SEQ
-! Added for DWD (2020)
-!NEC$ outerloop_unroll(8)
-    do jlev = 1,nlev
-      !$ACC LOOP WORKER VECTOR
-      do jcol = 1,ncol
-        ! Shonk & Hogan (2008) Eq 14 (after simplification):
-        flux_dn_diffuse(jcol,jlev+1) &
-             &  = (transmittance(jcol,jlev)*flux_dn_diffuse(jcol,jlev) &
-             &     + reflectance(jcol,jlev)*source(jcol,jlev+1) &
-             &     + trans_dir_diff(jcol,jlev)*flux_dn_direct(jcol,jlev)) * inv_denominator(jcol,jlev)
-        ! Shonk & Hogan (2008) Eq 12:
-        flux_up(jcol,jlev+1) = albedo(jcol,jlev+1)*flux_dn_diffuse(jcol,jlev+1) &
-             &            + source(jcol,jlev+1)
-        flux_dn_direct(jcol,jlev) = flux_dn_direct(jcol,jlev)*cos_sza
-      end do
-    end do
-    flux_dn_direct(:,nlev+1) = flux_dn_direct(:,nlev+1)*cos_sza
 
-#ifndef _OPENACC
-    if (lhook) call dr_hook('radiation_adding_ica_sw:adding_ica_sw',1,hook_handle)
-#endif
 
-  end subroutine adding_ica_sw
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+end subroutine adding_ica_sw_GPU
+
+  subroutine adding_ica_sw_CPU(ncol, nlev, incoming_toa, &
+&  albedo_surf_diffuse, albedo_surf_direct, cos_sza, &
+&  reflectance, transmittance, ref_dir, trans_dir_diff, trans_dir_dir, &
+&  flux_up, flux_dn_diffuse, flux_dn_direct, &
+&  albedo, source, inv_denominator)
+use parkind1
+use yomhook
+implicit none
+
+integer, intent(in) :: ncol 
+integer, intent(in) :: nlev 
+
+real(jprb), intent(in),  dimension(ncol)         :: incoming_toa
+
+real(jprb), intent(in),  dimension(ncol)         :: albedo_surf_diffuse, &
+&                                              albedo_surf_direct
+
+real(jprb), intent(in)                           :: cos_sza
+
+real(jprb), intent(in),  dimension(ncol, nlev)   :: reflectance, transmittance
+
+
+
+real(jprb), intent(in),  dimension(ncol, nlev)   :: ref_dir, trans_dir_diff
+
+
+real(jprb), intent(in),  dimension(ncol, nlev)   :: trans_dir_dir
+
+
+real(jprb), intent(out), dimension(ncol, nlev+1) :: flux_up, flux_dn_diffuse, &
+&                                              flux_dn_direct
+
+
+real(jprb), intent(inout), dimension(ncol, nlev+1) :: albedo
+
+
+real(jprb), intent(inout), dimension(ncol, nlev+1) :: source
+
+real(jprb), intent(inout), dimension(ncol, nlev)   :: inv_denominator
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+end subroutine adding_ica_sw_CPU
 
 end module radiation_adding_ica_sw
+

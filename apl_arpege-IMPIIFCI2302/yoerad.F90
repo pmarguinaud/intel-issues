@@ -154,6 +154,9 @@ LOGICAL :: LCLEAN
   REAL(KIND=JPRB),ALLOCATABLE:: CVDAEBC(:)
   REAL(KIND=JPRB),ALLOCATABLE:: CVDAESU(:)
 
+  CHARACTER(LEN=8) :: CECRADARCH
+  LOGICAL :: LECRADACC
+
 ! Look-up table for Planck function in emissivity intervals
   TYPE(TSPECTRALPLANCK) :: YSPECTPLANCK
 !----------------------------------------------------------------------------

@@ -40,15 +40,9 @@ contains
   ! Abort the program with optional error message. Normally you would
   ! log details of the error to nulerr before calling this subroutine.
   subroutine radiation_abort(text)
-    character(len=*), intent(in), optional :: text
+character(len=*), intent(in), optional :: text
 
-#include "abor1.intfb.h"
 
-    if (present(text)) then
-      call abor1(text)
-    else
-      call abor1('Error in radiation scheme')
-    end if
-  end subroutine radiation_abort
+end subroutine radiation_abort
 
 end module radiation_io
