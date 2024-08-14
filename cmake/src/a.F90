@@ -1,0 +1,5 @@
+MODULE A
+
+USE B
+
+END
