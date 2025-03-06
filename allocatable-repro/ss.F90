@@ -1,0 +1,15 @@
+PROGRAM SS
+
+USE YOMRIP1
+
+IMPLICIT NONE
+
+#include "ss1.intfb.h"
+#include "ss2.intfb.h"
+
+TYPE (TRIP1) :: YLRIP1
+
+CALL SS1 (13511_4, YLRIP1)
+CALL SS2 (13511_4, YLRIP1)
+
+END
